@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+{% block body %}
+
+    <h1>Moje Zwierzaki</h1>
+    <ul>
+        {% for animal in animals %}
+            <li>{{ animal.name|e }}
+
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="https://icon-icons.com/icons2/1950/PNG/256/free-30-instagram-stories-icons68_122615.png" alt="dog" style="width: 100%">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ animal.name }}</h5>
+                                <p class="card-text">{{ animal.sex }}</p>
+                                <p class="card-">{{ animal.dateOfBirth|date("m/d/Y") }}</p>
+                                <p class="card-text">{{ animal.species }}</p>
+                                <p class="card-text">{{ animal.breed }}</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
