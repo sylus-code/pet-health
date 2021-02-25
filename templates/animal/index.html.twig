@@ -1,30 +1,40 @@
 {% extends "base.html.twig" %}
 {% block body %}
-
-    <h1>Moje Zwierzaki</h1>
-    <ul>
-        {% for animal in animals %}
-            <li>{{ animal.name|e }}
-
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="https://icon-icons.com/icons2/1950/PNG/256/free-30-instagram-stories-icons68_122615.png" alt="dog" style="width: 100%">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ animal.name }}</h5>
-                                <p class="card-text">{{ animal.sex }}</p>
-                                <p class="card-">{{ animal.dateOfBirth|date("m/d/Y") }}</p>
-                                <p class="card-text">{{ animal.species }}</p>
-                                <p class="card-text">{{ animal.breed }}</p>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    <h1 class="text-center">Moje Zwierzaki</h1>
+    <a class="btn btn-warning" href="animal/create" role="button">Dodaj zwierza</a>
+    <ul class="list-unstyled mt-1">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            {% for animal in animals %}
+                <li>
+                    <a class="text-decoration-none" href="animal/show/{{ animal.id }}">
+                        <div class="col">
+                            <div class="card">
+                                <a class="text-end" href="/animal/delete/{{ animal.id }}"><span class="btn btn-dark"> &#9587;</span></a>
+                                <a class="text-decoration-none" href="animal/show/{{ animal.id }}">
+                                    <img src="/pet-love-icon.png" class="card-img-top mx-auto d-block" alt="pet-image"
+                                         style="width: 100px;">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">{{ animal.name }}</h5>
+                                        <p class="card-text">
+                                            {% if animal.sex == 'female' %}
+                                                <span>&female;</span>
+                                            {% else %}
+                                                <span>&male;</span>
+                                            {% endif %}
+                                        </p>
+                                        <p class="card-">{{ date().diff(date(animal.dateOfBirth)).y }} lat</p>
+                                        <p class="card-text">{{ animal.species }}</p>
+                                        <p class="card-text">{{ animal.breed }}</p>
+                                        <p class="card-text">
+                                            <small class="text-muted">Last updated 3 mins ago</small>
+                                        </p>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </li>
-        {% endfor %}
+                    </a>
+                </li>
+            {% endfor %}
+        </div>
     </ul>
-
 {% endblock %}

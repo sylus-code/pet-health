@@ -29,7 +29,7 @@ class AnimalController extends AbstractController
     /**
      * @param Request $request
      * @return Response
-     * @Route("/add", name="create_animal")
+     * @Route("/animal/create", name="create_animal")
      */
     public function create(Request $request): Response
     {
@@ -48,7 +48,7 @@ class AnimalController extends AbstractController
                 'success',
                 'Zwierzak dodany!');
 
-            return $this->redirectToRoute('create_animal');
+            return $this->redirectToRoute('index');
         }
 
         return $this->render('animal/create.html.twig', [
@@ -57,27 +57,33 @@ class AnimalController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param int $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @param Animal $animal
+     * @return Response
+     * @Route("/animal/show/{id}", name="show_animal")
      */
-    public function delete(Request $request, int $id)
+    public function show(Animal $animal): Response
     {
+        return $this->render('animal/show.html.twig', [
+            'animal' => $animal
+        ]);
+    }
 
-        if ($request->getMethod() == 'DELETE') {
-            $em = $this->getDoctrine()->getManager();
-            $animalToDelete = $em->getRepository('Animal')->findBy(['id' => $id]);
-            $em->remove($animalToDelete);
-            $em->flush();
+    /**
+     * @param Animal $animal
+     * @return Response
+     * @Route("/animal/delete/{id}", name="delete_animal")
+     */
+    public function delete(Animal $animal): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($animal);
+        $em->flush();
 
-            $this->addFlash(
-                'success',
-                'Zwierzak został usunięty z bazy'
-            );
+        $this->addFlash(
+            'success',
+            'Zwierzak został usunięty'
+        );
 
-            return $this->redirectToRoute('index');
-        }
-
-        return $this->render('animal/index.html.twig');
+        return $this->redirectToRoute('index');
     }
 }
