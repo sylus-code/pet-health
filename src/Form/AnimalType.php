@@ -20,14 +20,14 @@ class AnimalType extends AbstractType
             ->add('dateOfBirth', BirthdayType::class, ['label' => 'Data urodzenia zwierzaka: '])
             ->add('species', TextType::class, ['label' => 'Gatunek zwierzaka: '])
             ->add('breed', TextType::class, ['label' => 'Rasa zwierzaka: '])
-            ->add('save', SubmitType::class, ['label' => 'Dodaj zwierzaka'])
-            ;
+            ->add('save', SubmitType::class, ['label' => $options['btn-label']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Animal::class,
+            'btn-label' => 'Dodaj zwierzaka'
         ]);
     }
 }

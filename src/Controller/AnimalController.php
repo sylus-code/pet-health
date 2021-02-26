@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Animal;
 use App\Form\AnimalType;
 use App\Repository\AnimalRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,5 +86,36 @@ class AnimalController extends AbstractController
         );
 
         return $this->redirectToRoute('index');
+    }
+
+    /**
+     * @param Animal $animal
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @Route("/animal/edit/{id}", name="edit_animal")
+     */
+    public function update(Animal $animal, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(AnimalType::class, $animal, ['btn-label' => "Aktualizuj"]);
+        $form->handleRequest($request);
+
+        if (!$animal) {
+            $this->addFlash('warning', 'Zwierzak o podanym id: ' . $animal->getId() . ' nie istnieje!');
+
+        }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($animal);
+            $em->flush();
+
+            $this->addFlash('success', 'Zwierzak zaktualizowany!');
+            return $this->redirectToRoute('edit_animal', [
+                'id' => $animal->getId(),
+            ]);
+        }
+        return $this->render('animal/edit.html.twig', [
+                'form' => $form->createView()
+            ]
+        );
     }
 }
