@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Prevention;
 use App\Form\VaccineType;
+use App\Repository\PreventionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,12 @@ class VaccineController extends AbstractController
     /**
      * @Route("/vaccine", name="vaccine")
      */
-    public function index(): Response
+    public function index(PreventionRepository $preventionRepository): Response
     {
+        $vaccines = $preventionRepository->findBy(['type'=> Prevention::VACCINE]);
+
         return $this->render('vaccine/index.html.twig', [
-            'controller_name' => 'VaccineController',
+            'vaccines' => $vaccines,
         ]);
     }
 
