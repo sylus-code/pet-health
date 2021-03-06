@@ -36,7 +36,7 @@ class CreateUserCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('username', InputArgument::REQUIRED, 'Utwórz konto właściciela podając email')
+            ->addArgument('username', InputArgument::REQUIRED, 'Utwórz konto właściciela')
             ->addArgument('password', InputArgument::REQUIRED, 'Utworz haslo dostepu')
         ;
     }
@@ -53,7 +53,7 @@ class CreateUserCommand extends Command
         $plainPassword = $input->getArgument('password');
 
 
-        $user->setEmail($username);
+        $user->setUsername($username);
         $encoded = $this->passwordEncoder->encodePassword($user, $plainPassword);
         $user->setPassword($encoded);
 
