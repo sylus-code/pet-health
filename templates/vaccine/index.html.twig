@@ -1,16 +1,18 @@
 {% extends 'animal/animal-base.html.twig' %}
-{% block body %}
-    {{ parent() }}
-    <div class="container">
-        <ul class="list-group">
-            {% for vaccine in vaccines %}
+{% block tabcontent %}
+<div class="container">
+    <ul class="list-group">
+        {% for vaccine in vaccines %}
             <li class="list-group-item">
                 <p>
                     {{ vaccine.date|date("m/d/Y") }}
                     {{ vaccine.description }}
                 </p>
             </li>
-            {% endfor %}
-        </ul>
-    </div>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+{% block body %}
+    {{ parent() }}
 {% endblock %}

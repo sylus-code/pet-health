@@ -18,24 +18,24 @@ class VaccineController extends AbstractController
      */
     public function index(Animal $animal, PreventionRepository $preventionRepository): Response
     {
-        $vaccines = $preventionRepository->findBy(['type'=> Prevention::VACCINE]);
+        $vaccines = $preventionRepository->findBy(['type' => Prevention::VACCINE]);
 
         return $this->render('vaccine/index.html.twig', [
-            [],
+            'vaccines' => $vaccines,
             'animal' => $animal
         ]);
     }
 
     /**
-     * @Route("/vaccine/create", name="create_vaccine")
+     * @Route("/animal/{id}/vaccine/create", name="create_vaccine")
      */
-    public function create(Request $request): Response
+    public function create(Animal $animal, Request $request): Response
     {
         $vaccine = new Prevention();
         $form = $this->createForm(VaccineType::class, $vaccine);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $vaccine->setType(0);
             $entityManager = $this->getDoctrine()->getManager();
@@ -47,7 +47,7 @@ class VaccineController extends AbstractController
                 'Dodano nowe szczepienie!'
             );
 
-            return $this->redirectToRoute('vaccine');
+            return $this->redirectToRoute('vaccine', ['id' => $animal->getId()]);
         }
         return $this->render('vaccine/create.html.twig', [
             'form' => $form->createView()

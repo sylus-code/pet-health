@@ -1,0 +1,14 @@
+<div class="text-center">
+    <h5 class="card-title mt-4 text-uppercase">Profil zwierza</h5>
+</div>
+<div class="text-center mt-4 mb-4">
+    <h5 class="card-title">{{ animal.name }}</h5>
+    {{ animal.species }} |
+    {{ animal.breed }} |
+    {% if animal.sex == 'female' %}
+        <span>&female;</span> |
+    {% else %}
+        <span>&male;</span> |
+    {% endif %}
+    {{ date().diff(date(animal.dateOfBirth)).y }} lat
+</div>
