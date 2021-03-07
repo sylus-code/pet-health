@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Animal;
 use App\Entity\Prevention;
 use App\Form\VaccineType;
 use App\Repository\PreventionRepository;
@@ -13,20 +14,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class VaccineController extends AbstractController
 {
     /**
-     * @Route("/vaccine", name="vaccine")
+     * @Route("/animal/{id}/vaccine", name="vaccine")
      */
-    public function index(PreventionRepository $preventionRepository): Response
+    public function index(Animal $animal, PreventionRepository $preventionRepository): Response
     {
         $vaccines = $preventionRepository->findBy(['type'=> Prevention::VACCINE]);
 
         return $this->render('vaccine/index.html.twig', [
-            'vaccines' => $vaccines,
+            [],
+            'animal' => $animal
         ]);
     }
 
     /**
-     * @param Request $request
-     * @return Response
      * @Route("/vaccine/create", name="create_vaccine")
      */
     public function create(Request $request): Response

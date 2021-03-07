@@ -11,16 +11,16 @@
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for animal in animals %}
                     <li>
-                        <a class="text-decoration-none" href="animal/show/{{ animal.id }}">
+                        <a class="text-decoration-none" href="{{ path('show_animal', {'id': animal.id}) }}">
                             <div class="col">
                                 <div class="card">
                                     <div class="border border-1 border-light mb-3 d-flex ">
-                                        <a class="p-2 w-100 " href="/animal/edit/{{ animal.id }}"><span
+                                        <a class="p-2 w-100 " href="{{ path('edit_animal', {'id': animal.id}) }}"><span
                                                     class="btn  fs-4 text"> &#10000;</span></a>
-                                        <a class="p-2 flex-shrink-1" href="/animal/delete/{{ animal.id }}"><span
+                                        <a class="p-2 flex-shrink-1" href="{{ path('delete_animal', {'id': animal.id}) }}"><span
                                                     class=" btn  fs-5 "> &#9587;</span></a>
                                     </div>
-                                    <a class="text-decoration-none" href="animal/show/{{ animal.id }}">
+                                    <a class="text-decoration-none" href="{{ path('show_animal', {'id': animal.id}) }}">
                                         <img src="/pet-love-icon.png" class="card-img-top mx-auto d-block"
                                              alt="pet-image"
                                              style="width: 100px;">

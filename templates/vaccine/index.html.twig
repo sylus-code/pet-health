@@ -1,5 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'animal/animal-base.html.twig' %}
 {% block body %}
+    {{ parent() }}
     <div class="container">
         <ul class="list-group">
             {% for vaccine in vaccines %}

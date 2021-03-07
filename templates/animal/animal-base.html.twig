@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="card text-center">
+        {{ include('animal/show.html.twig') }}
+        {{ include('animal/animal-tabs.html.twig') }}
+        <div class="card-body">
+            <h5 class="card-title">Szczegółowe informacje</h5>
+            <p class="card-text">Tu jest jakaś informacja o zwierzaku jak on się tu leczy.</p>
+            {{ include('vaccine/index.html.twig') }}
+        </div>
+    </div>
+    <div>
+        <p class="text-center mt-2"><a href="/" class="btn btn-warning"> Powrót </a></p>
+    </div>
+{% endblock %}
