@@ -3,9 +3,9 @@
     <div class="container">
         <h1 class="text-center">Moje Zwierzaki</h1>
         <div class="d-flex ">
-            <p class="p-2 flex-grow-1 " href="animal/create" role="button"><span class="btn btn-warning">&#8853; Dodaj zwierza</span></p>
+            <p class="p-2 flex-grow-1 " role="button"><a href="{{ path('create_animal') }}"class="btn btn-warning">&#8853; Dodaj zwierza</a></p>
 
-            <a href="/logout" class="p-2"><span class="btn btn-dark ">&#9212; Wyloguj</span> </a>
+            <a href="{{ path('app_logout') }}" class="p-2"><span class="btn btn-dark ">&#9212; Wyloguj</span> </a>
         </div>
         <ul class="list-unstyled mt-1">
             <div class="row row-cols-1 row-cols-md-3 g-4">
