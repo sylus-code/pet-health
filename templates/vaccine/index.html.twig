@@ -1,6 +1,13 @@
 {% extends 'animal/animal-base.html.twig' %}
 {% block tabcontent %}
     <div class="container">
+        <div>
+            <p class=" text-start" role="button">
+                <a class="btn btn-warning" href=" {{ path('create_vaccine', {'id': animal.id }) }}">
+                Dodaj szczepienie
+                </a>
+            </p>
+        </div>
         <ul class="list-group">
             {% for vaccine in vaccines %}
                 <li class="list-group-item">

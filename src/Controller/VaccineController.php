@@ -53,7 +53,8 @@ class VaccineController extends AbstractController
             return $this->redirectToRoute('vaccine', ['id' => $animal->getId()]);
         }
         return $this->render('vaccine/create.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'animal' => $animal
         ]);
     }
 
