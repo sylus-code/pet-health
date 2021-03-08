@@ -6,6 +6,8 @@ use App\Entity\Animal;
 use App\Entity\Prevention;
 use App\Form\VaccineType;
 use App\Repository\PreventionRepository;
+use Doctrine\ORM\EntityManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,5 +54,37 @@ class VaccineController extends AbstractController
         return $this->render('vaccine/create.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/animal/{animalId}/vaccine/{vaccineId}/edit", name="edit_vaccine")
+     * @ParamConverter("vaccine", class="App\Entity\Prevention", options={"id" = "vaccineId"})
+     * @ParamConverter ("animal", class="App\Entity\Animal", options={"id" = "animalId"})
+     */
+    public function update(Prevention $vaccine, Animal $animal, Request $request): Response
+    {
+        $form = $this->createForm(VaccineType::class, $vaccine);
+        $form->handleRequest($request);
+
+        if (!$vaccine) {
+            $this->addFlash('warning', 'Szczepienie o podanym id: ' . $vaccine->getId() . ' nie istnieje!');
+
+        }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($vaccine);
+            $em->flush();
+
+            $this->addFlash('success', 'Szczepienie zaktualizowane!');
+            return $this->redirectToRoute('edit_vaccine', [
+                'animalId' => $animal->getId(),
+                'vaccineId' => $vaccine->getId()
+            ]);
+        }
+        return $this->render('vaccine/edit.html.twig', [
+                'form' => $form->createView(),
+                'animal' => $animal
+            ]
+        );
     }
 }

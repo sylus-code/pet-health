@@ -1,17 +1,23 @@
 {% extends 'animal/animal-base.html.twig' %}
 {% block tabcontent %}
-<div class="container">
-    <ul class="list-group">
-        {% for vaccine in vaccines %}
-            <li class="list-group-item">
-                <p>
-                    {{ vaccine.date|date("m/d/Y") }}
-                    {{ vaccine.description }}
-                </p>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
+    <div class="container">
+        <ul class="list-group">
+            {% for vaccine in vaccines %}
+                <li class="list-group-item">
+                    <p>
+
+                        {{ vaccine.date|date("m/d/Y") }}
+                        {{ vaccine.description }}
+                        <a class="text-decoration-none fs-3" href="{{ path('edit_vaccine',
+                            {   'animalId': animal.id,
+                                'vaccineId': vaccine.id }) }}">
+                             &#10000;
+                        </a>
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
 {% block body %}
     {{ parent() }}
