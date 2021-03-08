@@ -4,16 +4,35 @@
         <ul class="list-group">
             {% for vaccine in vaccines %}
                 <li class="list-group-item">
-                    <p>
+                    <div class="row g-0">
+                        <div class="col-sm-8 col-md-9">
+                            <p class="fs-5 mt-2">
+                                {{ vaccine.date|date("m/d/Y") }}
+                                {{ vaccine.description }}
+                            </p>
+                        </div>
+                        <div class="col-4 col-md-3">
+                            <div class="btn-group" role="group">
+                                <button type="button" class=" btn btn-outline-dark">
+                                    <a class="text-decoration-none" href="{{ path('edit_vaccine',
+                                        {   'animalId': animal.id,
+                                            'vaccineId': vaccine.id }) }}">
+                                        <span class=" fs-4 text-warning"> &#10000;</span>
+                                    </a>
+                                </button>
 
-                        {{ vaccine.date|date("m/d/Y") }}
-                        {{ vaccine.description }}
-                        <a class="text-decoration-none fs-3" href="{{ path('edit_vaccine',
-                            {   'animalId': animal.id,
-                                'vaccineId': vaccine.id }) }}">
-                             &#10000;
-                        </a>
-                    </p>
+                                <button type="button" class="btn btn-outline-dark">
+                                    <a c href="{{ path('delete_vaccine',
+                                        {   'animalId': animal.id,
+                                            'vaccineId': vaccine.id }) }}">
+                                        <span class=" btn-close"> &#9587;</span>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </li>
             {% endfor %}
         </ul>

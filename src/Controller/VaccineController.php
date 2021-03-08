@@ -7,6 +7,7 @@ use App\Entity\Prevention;
 use App\Form\VaccineType;
 use App\Repository\PreventionRepository;
 use Doctrine\ORM\EntityManager;
+use phpDocumentor\Reflection\Types\This;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,5 +87,26 @@ class VaccineController extends AbstractController
                 'animal' => $animal
             ]
         );
+    }
+
+    /**
+     * @Route("/animal/{animalId}/vaccine/{vaccineId}/delete", name="delete_vaccine")
+     * @ParamConverter("vaccine", class="App\Entity\Prevention", options={"id" = "vaccineId"})
+     * @ParamConverter ("animal", class="App\Entity\Animal", options={"id" = "animalId"})
+     */
+    public function delete(Prevention $vaccine, Animal $animal): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($vaccine);
+        $em->flush();
+
+        $this->addFlash(
+            'success',
+            'Szczepienie zostało usunięte'
+        );
+
+        return $this->redirectToRoute('vaccine', [
+            'id' => $animal->getId()
+        ]);
     }
 }
