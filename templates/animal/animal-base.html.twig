@@ -8,14 +8,16 @@
                     <a class="nav-link text-dark" href="#">Wizyty</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark active" aria-current="true" href="{{ path('vaccine', {'id': animal.id}) }}">Szczepienia</a>
+                    <a class="nav-link text-dark active" href="{{ path('vaccine', {'id': animal.id}) }}">Szczepienia</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark active" aria-current="true" href="{{ path('parasite_protection', {'id': animal.id}) }}">Pasożyty</a>
                 </li>
             </ul>
         </div>
         <div class="card text-center">
             <div id="tabcontent" class="card-body">
-                <h5 class="card-title">Szczegółowe informacje</h5>
-                <p class="card-text">Tu jest jakaś informacja o zwierzaku jak on się tu leczy.</p>
+{#                <h5 class="card-title">Szczegółowe informacje</h5>#}
                 {% block tabcontent %}{% endblock %}
             </div>
         </div>

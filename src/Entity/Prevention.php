@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Prevention
 {
     const VACCINE = 0;
-    const PARASITE = 1;
+    const PARASITE_PROTECTION = 1;
     const CARE = 2;
 
     /**
