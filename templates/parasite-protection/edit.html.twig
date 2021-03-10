@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="container">
+        <div class="text-center">
+            <h5 class="card-title mt-4 text-uppercase">Edytuj zabezpieczenie</h5>
+        </div>
+        <div class="col-md-6 offset-md-3">
+            {{ form(form) }}
+            <a class="btn btn-warning mt-1" href="{{ path('parasite_protection', {'id': animal.id }) }}" role="button">Powrót</a>
+        </div>
+    </div>
+{% endblock %}
