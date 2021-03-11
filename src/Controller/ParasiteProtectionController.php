@@ -22,10 +22,13 @@ class ParasiteProtectionController extends AbstractController
     {
         $parasiteProtections = $preventionRepository->findBy(['type' => Prevention::PARASITE_PROTECTION]);
 
-        return $this->render('parasite-protection/index.html.twig', [
-            'parasiteProtections' => $parasiteProtections,
-            'animal' => $animal
-        ]);
+        return $this->render(
+            'parasite-protection/index.html.twig',
+            [
+                'parasiteProtections' => $parasiteProtections,
+                'animal' => $animal
+            ]
+        );
     }
 
     /**
@@ -55,10 +58,13 @@ class ParasiteProtectionController extends AbstractController
             return $this->redirectToRoute('parasite_protection', ['id' => $animal->getId()]);
         }
 
-        return $this->render('parasite-protection/create.html.twig', [
-            'form' => $form->createView(),
-            'animal' => $animal
-        ]);
+        return $this->render(
+            'parasite-protection/create.html.twig',
+            [
+                'form' => $form->createView(),
+                'animal' => $animal
+            ]
+        );
     }
 
     /**
@@ -72,8 +78,10 @@ class ParasiteProtectionController extends AbstractController
         $form->handleRequest($request);
 
         if (!$parasiteProtection) {
-            $this->addFlash('warning', 'Zabezpieczenie na pasożyty o podanym id: ' . $parasiteProtection->getId() . ' nie istnieje!');
-
+            $this->addFlash(
+                'warning',
+                'Zabezpieczenie na pasożyty o podanym id: ' . $parasiteProtection->getId() . ' nie istnieje!'
+            );
         }
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -81,18 +89,52 @@ class ParasiteProtectionController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash(
-                'success', 'Zabezpieczenie na pasożyty zostało zaktualizowane!'
+                'success',
+                'Zabezpieczenie na pasożyty zostało zaktualizowane!'
             );
 
-            return $this->redirectToRoute('edit_parasite_protection', [
-                'animalId' => $animal->getId(),
-                'parasiteProtectionId' => $parasiteProtection->getId()
-            ]);
+            return $this->redirectToRoute(
+                'edit_parasite_protection',
+                [
+                    'animalId' => $animal->getId(),
+                    'parasiteProtectionId' => $parasiteProtection->getId()
+                ]
+            );
         }
 
-        return $this->render('parasite-protection/edit.html.twig', [
+        return $this->render(
+            'parasite-protection/edit.html.twig',
+            [
                 'form' => $form->createView(),
                 'animal' => $animal
             ]
         );
     }
+
+    /**
+     * @param Prevention $parasiteProtection
+     * @param Animal $animal
+     * @return Response
+     * @Route("/animal/{animalId}/parasite-protection/{parasiteProtectionId}/delete", name="delete_parasite_protection")
+     * @ParamConverter("parasiteProtection", class="App\Entity\Prevention", options={ "id" = "parasiteProtectionId"})
+     * @ParamConverter("animal", class="App\Entity\Animal", options={ "id" = "animalId"})
+     */
+    public function delete(Prevention $parasiteProtection, Animal $animal): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($parasiteProtection);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'success',
+            'Zabezpieczenia na pasożyty zostało usunięte!'
+        );
+
+        return $this->redirectToRoute(
+            'parasite_protection',
+            [
+                'id' => $animal->getId()
+            ]
+        );
+    }
+}
