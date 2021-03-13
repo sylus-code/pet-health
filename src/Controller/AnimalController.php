@@ -21,10 +21,13 @@ class AnimalController extends AbstractController
      */
     public function index(AnimalRepository $animalRepository): Response
     {
-        $animals = $animalRepository->findAll();
-        return $this->render('animal/index.html.twig', [
-            'animals' => $animals
-        ]);
+        $animals = $animalRepository->findBy(['user' => $this->getUser()]);
+        return $this->render(
+            'animal/index.html.twig',
+            [
+                'animals' => $animals,
+            ]
+        );
     }
 
     /**
@@ -47,14 +50,18 @@ class AnimalController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Zwierzak dodany!');
+                'Zwierzak dodany!'
+            );
 
             return $this->redirectToRoute('index');
         }
 
-        return $this->render('animal/create.html.twig', [
-            'form' => $form->createView()
-        ]);
+        return $this->render(
+            'animal/create.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
     }
 
     /**
@@ -64,9 +71,12 @@ class AnimalController extends AbstractController
      */
     public function show(Animal $animal): Response
     {
-        return $this->render('animal/show.html.twig', [
-            'animal' => $animal
-        ]);
+        return $this->render(
+            'animal/show.html.twig',
+            [
+                'animal' => $animal
+            ]
+        );
     }
 
     /**
@@ -102,18 +112,22 @@ class AnimalController extends AbstractController
 
         if (!$animal) {
             $this->addFlash('warning', 'Zwierzak o podanym id: ' . $animal->getId() . ' nie istnieje!');
-
         }
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($animal);
             $em->flush();
 
             $this->addFlash('success', 'Zwierzak zaktualizowany!');
-            return $this->redirectToRoute('edit_animal', [
-                'id' => $animal->getId(),
-            ]);
+            return $this->redirectToRoute(
+                'edit_animal',
+                [
+                    'id' => $animal->getId(),
+                ]
+            );
         }
-        return $this->render('animal/edit.html.twig', [
+        return $this->render(
+            'animal/edit.html.twig',
+            [
                 'form' => $form->createView()
             ]
         );

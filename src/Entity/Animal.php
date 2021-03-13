@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AnimalRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,6 +49,16 @@ class Animal
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Prevention::class, mappedBy="animal", orphanRemoval=true)
+     */
+    private $preventions;
+
+    public function __construct()
+    {
+        $this->preventions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +133,36 @@ class Animal
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Prevention[]
+     */
+    public function getPreventions(): Collection
+    {
+        return $this->preventions;
+    }
+
+    public function addPrevention(Prevention $prevention): self
+    {
+        if (!$this->preventions->contains($prevention)) {
+            $this->preventions[] = $prevention;
+            $prevention->setAnimal($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrevention(Prevention $prevention): self
+    {
+        if ($this->preventions->removeElement($prevention)) {
+            // set the owning side to null (unless already changed)
+            if ($prevention->getAnimal() === $this) {
+                $prevention->setAnimal(null);
+            }
+        }
 
         return $this;
     }
