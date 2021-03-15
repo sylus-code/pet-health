@@ -6,8 +6,6 @@ use App\Entity\Animal;
 use App\Entity\Prevention;
 use App\Form\VaccineType;
 use App\Repository\PreventionRepository;
-use Doctrine\ORM\EntityManager;
-use phpDocumentor\Reflection\Types\This;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,12 +19,20 @@ class VaccineController extends AbstractController
      */
     public function index(Animal $animal, PreventionRepository $preventionRepository): Response
     {
-        $vaccines = $preventionRepository->findBy(['type' => Prevention::VACCINE]);
+        $vaccines = $preventionRepository->findBy(
+            [
+                'type' => Prevention::VACCINE,
+                'animal' => $animal
+            ]
+        );
 
-        return $this->render('vaccine/index.html.twig', [
-            'vaccines' => $vaccines,
-            'animal' => $animal
-        ]);
+        return $this->render(
+            'vaccine/index.html.twig',
+            [
+                'vaccines' => $vaccines,
+                'animal' => $animal
+            ]
+        );
     }
 
     /**
@@ -39,7 +45,7 @@ class VaccineController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $vaccine->setAnimal($animal);
             $vaccine->setType(0);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($vaccine);
@@ -52,10 +58,13 @@ class VaccineController extends AbstractController
 
             return $this->redirectToRoute('vaccine', ['id' => $animal->getId()]);
         }
-        return $this->render('vaccine/create.html.twig', [
-            'form' => $form->createView(),
-            'animal' => $animal
-        ]);
+        return $this->render(
+            'vaccine/create.html.twig',
+            [
+                'form' => $form->createView(),
+                'animal' => $animal
+            ]
+        );
     }
 
     /**
@@ -70,7 +79,6 @@ class VaccineController extends AbstractController
 
         if (!$vaccine) {
             $this->addFlash('warning', 'Szczepienie o podanym id: ' . $vaccine->getId() . ' nie istnieje!');
-
         }
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -78,12 +86,17 @@ class VaccineController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Szczepienie zaktualizowane!');
-            return $this->redirectToRoute('edit_vaccine', [
-                'animalId' => $animal->getId(),
-                'vaccineId' => $vaccine->getId()
-            ]);
+            return $this->redirectToRoute(
+                'edit_vaccine',
+                [
+                    'animalId' => $animal->getId(),
+                    'vaccineId' => $vaccine->getId()
+                ]
+            );
         }
-        return $this->render('vaccine/edit.html.twig', [
+        return $this->render(
+            'vaccine/edit.html.twig',
+            [
                 'form' => $form->createView(),
                 'animal' => $animal
             ]
@@ -106,8 +119,11 @@ class VaccineController extends AbstractController
             'Szczepienie zostało usunięte'
         );
 
-        return $this->redirectToRoute('vaccine', [
-            'id' => $animal->getId()
-        ]);
+        return $this->redirectToRoute(
+            'vaccine',
+            [
+                'id' => $animal->getId()
+            ]
+        );
     }
 }

@@ -19,7 +19,12 @@ class CareController extends AbstractController
      */
     public function index(Animal $animal, PreventionRepository $preventionRepository): Response
     {
-        $cares = $preventionRepository->findBy(['type' => Prevention::CARE]);
+        $cares = $preventionRepository->findBy(
+            [
+                'type' => Prevention::CARE,
+                'animal' => $animal
+            ]
+        );
         return $this->render(
             'care/index.html.twig',
             [
@@ -41,6 +46,7 @@ class CareController extends AbstractController
         $form = $this->createForm(CareType::class, $care);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $care->setAnimal($animal);
             $care->setType(Prevention::CARE);
 
             $entityManager = $this->getDoctrine()->getManager();

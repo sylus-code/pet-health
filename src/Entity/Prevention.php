@@ -36,6 +36,12 @@ class Prevention
      */
     private $type;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Animal::class, inversedBy="preventions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $animal;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -73,6 +79,18 @@ class Prevention
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getAnimal(): ?Animal
+    {
+        return $this->animal;
+    }
+
+    public function setAnimal(?Animal $animal): self
+    {
+        $this->animal = $animal;
 
         return $this;
     }

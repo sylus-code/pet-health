@@ -20,7 +20,12 @@ class ParasiteProtectionController extends AbstractController
      */
     public function index(Animal $animal, PreventionRepository $preventionRepository): Response
     {
-        $parasiteProtections = $preventionRepository->findBy(['type' => Prevention::PARASITE_PROTECTION]);
+        $parasiteProtections = $preventionRepository->findBy(
+            [
+                'type' => Prevention::PARASITE_PROTECTION,
+                'animal' => $animal
+            ]
+        );
 
         return $this->render(
             'parasite-protection/index.html.twig',
@@ -45,6 +50,7 @@ class ParasiteProtectionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $parasiteProtection->setAnimal($animal);
             $parasiteProtection->setType(1);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($parasiteProtection);
