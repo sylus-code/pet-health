@@ -110,4 +110,29 @@ class CareController extends AbstractController
             ]
         );
     }
+
+    /**
+     * @return Response
+     * @Route("/animal/{animalId}/care/{careId}/delete", name="delete_care")
+     * @ParamConverter("care", class="App\Entity\Prevention", options={ "id" = "careId"})
+     * @ParamConverter ("animal", class="App\Entity\Animal", options={ "id" = "animalId"})
+     */
+    public function delete(Animal $animal, Prevention $care): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($care);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'success',
+            'Pielęgnacja została usunięta!'
+        );
+
+        return $this->redirectToRoute(
+            'care',
+            [
+                'id' => $animal->getId()
+            ]
+        );
+    }
 }
