@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    {{ include('animal/header.html.twig') }}
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Wizyty</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark active" aria-current="true" href="{{ path('vaccine', {'id': animal.id}) }}">Szczepienia</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card text-center">
+            <div id="tabcontent" class="card-body">
+                <h5 class="card-title">Szczegółowe informacje</h5>
+                <p class="card-text">Tu jest jakaś informacja o zwierzaku jak on się tu leczy.</p>
+                {% block tabcontent %}{% endblock %}
+            </div>
+        </div>
+        <div>
+            <p class="text-center mt-2"><a href="/" class="btn btn-warning"> Powrót </a></p>
+        </div>
+    </div>
+{% endblock %}

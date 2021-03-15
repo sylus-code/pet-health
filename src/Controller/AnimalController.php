@@ -60,7 +60,7 @@ class AnimalController extends AbstractController
     /**
      * @param Animal $animal
      * @return Response
-     * @Route("/animal/show/{id}", name="show_animal")
+     * @Route("/animal/{id}", name="show_animal")
      */
     public function show(Animal $animal): Response
     {
