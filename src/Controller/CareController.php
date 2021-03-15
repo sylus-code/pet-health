@@ -16,6 +16,9 @@ class CareController extends AbstractController
 {
     /**
      * @Route("/animal/{id}/care", name="care")
+     * @param Animal $animal
+     * @param PreventionRepository $preventionRepository
+     * @return Response
      */
     public function index(Animal $animal, PreventionRepository $preventionRepository): Response
     {
@@ -76,6 +79,9 @@ class CareController extends AbstractController
     }
 
     /**
+     * @param Prevention $care
+     * @param Animal $animal
+     * @param Request $request
      * @return Response
      * @Route("/animal/{animalId}/care/{careId}/edit", name="edit_care")
      * @ParamConverter("care", class="App\Entity\Prevention", options={ "id" = "careId" })
@@ -87,7 +93,7 @@ class CareController extends AbstractController
         $form->handleRequest($request);
 
         if (!$care) {
-            $this->addFlash('warning', 'Pielęgnacja o podanym id: ' . $vaccine->getId() . ' nie istnieje!');
+            $this->addFlash('warning', 'Pielęgnacja o podanym id: ' . $care->getId() . ' nie istnieje!');
         }
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -118,6 +124,8 @@ class CareController extends AbstractController
     }
 
     /**
+     * @param Animal $animal
+     * @param Prevention $care
      * @return Response
      * @Route("/animal/{animalId}/care/{careId}/delete", name="delete_care")
      * @ParamConverter("care", class="App\Entity\Prevention", options={ "id" = "careId"})
