@@ -1,0 +1,50 @@
+{% extends 'animal/animal-base.html.twig' %}
+{% block tabcontent %}
+    <div class="container">
+        <div>
+            <h5 class="text-center">Pielęgnacja</h5>
+            <p class=" text-start" role="button">
+                <a class="btn btn-warning" href=" {{ path('create_care', {'id': animal.id }) }}">
+                    Dodaj pielęgnację
+                </a>
+
+            </p>
+        </div>
+        <ul class="list-group">
+            {% for care in cares %}
+                <li class="list-group-item">
+                    <div class="row g-0">
+                        <div class="col-sm-8 col-md-9">
+                            <p class="fs-5 mt-2">
+                                {{ care.date|date("m/d/Y") }}
+                                {{ care.description }}
+                            </p>
+                        </div>
+{#                        <div class="col-4 col-md-3">#}
+{#                            <div class="btn-group" role="group">#}
+{#                                <button type="button" class=" btn btn-outline-dark">#}
+{#                                    <a class="text-decoration-none" href="{{ path('edit_vaccine',#}
+{#                                        {   'animalId': animal.id,#}
+{#                                            'vaccineId': vaccine.id }) }}">#}
+{#                                        <span class=" fs-4 text-warning"> &#10000;</span>#}
+{#                                    </a>#}
+{#                                </button>#}
+
+{#                                <button type="button" class="btn btn-outline-dark">#}
+{#                                    <a c href="{{ path('delete_vaccine',#}
+{#                                        {   'animalId': animal.id,#}
+{#                                            'vaccineId': vaccine.id }) }}">#}
+{#                                        <span class=" btn-close"> &#9587;</span>#}
+{#                                    </a>#}
+{#                                </button>#}
+{#                            </div>#}
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+{% endblock %}

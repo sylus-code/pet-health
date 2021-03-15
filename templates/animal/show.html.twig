@@ -1,30 +1,34 @@
 {% extends "base.html.twig" %}
 {% block body %}
-<div class="text-center">
-    <h5 class="card-title mt-4 text-uppercase">Profil zwierza</h5>
-</div>
-<div class="text-center mt-4 mb-4">
-    <h5 class="card-title">{{ animal.name }}</h5>
-    {{ animal.species }} |
-    {{ animal.breed }} |
-    {% if animal.sex == 'female' %}
-        <span>&female;</span> |
-    {% else %}
-        <span>&male;</span> |
-    {% endif %}
-    {{ date().diff(date(animal.dateOfBirth)).y }} lat
-</div>
-<div class="card-header">
-    <ul class="nav nav-tabs card-header-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" href="#">Wizyty</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" aria-current="true" href="{{ path('vaccine', {'id': animal.id}) }}">Szczepienia</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" aria-current="true" href="{{ path('parasite_protection', {'id': animal.id}) }}">Pasożyty</a>
-        </li>
-    </ul>
-</div>
+    <div class="text-center">
+        <h5 class="card-title mt-4 text-uppercase">Profil zwierza</h5>
+    </div>
+    <div class="text-center mt-4 mb-4">
+        <h5 class="card-title">{{ animal.name }}</h5>
+        {{ animal.species }} |
+        {{ animal.breed }} |
+        {% if animal.sex == 'female' %}
+            <span>&female;</span> |
+        {% else %}
+            <span>&male;</span> |
+        {% endif %}
+        {{ date().diff(date(animal.dateOfBirth)).y }} lat
+    </div>
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Wizyty</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" aria-current="true" href="{{ path('vaccine', {'id': animal.id}) }}">Szczepienia</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" aria-current="true"
+                   href="{{ path('parasite_protection', {'id': animal.id}) }}">Pasożyty</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" aria-current="true" href="{{ path('care', {'id': animal.id}) }}">Pielęgnacja</a>
+            </li>
+        </ul>
+    </div>
 {% endblock %}
