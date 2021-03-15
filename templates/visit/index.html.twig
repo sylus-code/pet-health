@@ -3,43 +3,46 @@
     <div class="container">
         <div>
             <h5 class="text-center">Wizyty</h5>
-{#            <p class=" text-start" role="button">#}
-{#                <a class="btn btn-warning" href=" {{ path('create_care', {'id': animal.id }) }}">#}
-{#                    Dodaj pielęgnację#}
-{#                </a>#}
+            <p class=" text-start" role="button">
+                <a class="btn btn-warning" href=" {{ path('create_visit', {'id': animal.id }) }}">
+                    Dodaj szczepienie
+                </a>
 
-{#            </p>#}
+            </p>
         </div>
         <ul class="list-group">
             {% for visit in visits %}
                 <li class="list-group-item">
                     <div class="row g-0">
-                        <div class="col-sm-8 col-md-9">
-                            <p class="fs-5 mt-2">
+                        <div class="col-sm-8 col-md-9 text-start">
+                            <p class="fs-5 mt-2 ">
                                 {{ visit.date|date("m/d/Y") }}
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 {{ visit.description }}
                             </p>
                         </div>
 {#                        <div class="col-4 col-md-3">#}
 {#                            <div class="btn-group" role="group">#}
 {#                                <button type="button" class=" btn btn-outline-dark">#}
-{#                                    <a class="text-decoration-none" href="{{ path('edit_care',#}
+{#                                    <a class="text-decoration-none" href="{{ path('edit_vaccine',#}
 {#                                        {   'animalId': animal.id,#}
-{#                                            'careId': care.id }) }}">#}
+{#                                            'vaccineId': vaccine.id }) }}">#}
 {#                                        <span class=" fs-4 text-warning"> &#10000;</span>#}
 {#                                    </a>#}
 {#                                </button>#}
 
 {#                                <button type="button" class="btn btn-outline-dark">#}
-{#                                    <a c href="{{ path('delete_care',#}
+{#                                    <a c href="{{ path('delete_vaccine',#}
 {#                                        {   'animalId': animal.id,#}
-{#                                            'careId': care.id }) }}">#}
+{#                                            'vaccineId': vaccine.id }) }}">#}
 {#                                        <span class=" btn-close"> &#9587;</span>#}
 {#                                    </a>#}
 {#                                </button>#}
 {#                            </div>#}
-                        </div>
+{#                        </div>#}
                     </div>
+
+
                 </li>
             {% endfor %}
         </ul>
