@@ -6,6 +6,7 @@ use App\Entity\Animal;
 use App\Entity\Visit;
 use App\Form\VisitType;
 use App\Repository\VisitRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,6 +63,51 @@ class VisitController extends AbstractController
 
         return $this->render(
             'visit/create.html.twig',
+            [
+                'form' => $form->createView(),
+                'animal' => $animal
+            ]
+        );
+    }
+
+    /**
+     * @param Visit $visit
+     * @param Animal $animal
+     * @param Request $request
+     * @return Response
+     * @Route("/animal/{animalId}/visit/{visitId}/edit", name="edit_visit")
+     * @ParamConverter("animal", class="App\Entity\Animal", options={"id" = "animalId"})
+     * @ParamConverter("visit", class="App\Entity\Visit", options={"id" = "visitId"})
+     */
+    public function update(Visit $visit, Animal $animal, Request $request): Response
+    {
+        $form = $this->createForm(VisitType::class, $visit);
+        $form->handleRequest($request);
+
+        if (!$visit) {
+            $this->addFlash('warning', 'Wizyta o podanym id: ' . $visit->getId() . ' nie istnieje!');
+        }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($visit);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Wizyta została zaktualizowana!'
+            );
+
+            return $this->redirectToRoute(
+                'edit_visit',
+                [
+                    'animalId' => $animal->getId(),
+                    'visitId' => $visit->getId()
+                ]
+            );
+        }
+
+        return $this->render(
+            'visit/edit.html.twig',
             [
                 'form' => $form->createView(),
                 'animal' => $animal

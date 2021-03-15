@@ -5,7 +5,7 @@
             <h5 class="text-center">Wizyty</h5>
             <p class=" text-start" role="button">
                 <a class="btn btn-warning" href=" {{ path('create_visit', {'id': animal.id }) }}">
-                    Dodaj szczepienie
+                    Dodaj wizytę
                 </a>
 
             </p>
@@ -21,15 +21,16 @@
                                 {{ visit.description }}
                             </p>
                         </div>
-{#                        <div class="col-4 col-md-3">#}
-{#                            <div class="btn-group" role="group">#}
-{#                                <button type="button" class=" btn btn-outline-dark">#}
-{#                                    <a class="text-decoration-none" href="{{ path('edit_vaccine',#}
-{#                                        {   'animalId': animal.id,#}
-{#                                            'vaccineId': vaccine.id }) }}">#}
-{#                                        <span class=" fs-4 text-warning"> &#10000;</span>#}
-{#                                    </a>#}
-{#                                </button>#}
+                        <div class="col-4 col-md-3">
+                            <div class="btn-group" role="group">
+                                <button type="button" class=" btn btn-outline-dark">
+                                    <a class="text-decoration-none" href="{{path('edit_visit',
+                                        {   'animalId': animal.id,
+                                            'visitId': visit.id
+                                        }) }}">
+                                        <span class=" fs-4 text-warning"> &#10000;</span>
+                                    </a>
+                                </button>
 
 {#                                <button type="button" class="btn btn-outline-dark">#}
 {#                                    <a c href="{{ path('delete_vaccine',#}
@@ -38,8 +39,8 @@
 {#                                        <span class=" btn-close"> &#9587;</span>#}
 {#                                    </a>#}
 {#                                </button>#}
-{#                            </div>#}
-{#                        </div>#}
+                            </div>
+                        </div>
                     </div>
 
 
