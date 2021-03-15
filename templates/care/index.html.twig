@@ -20,15 +20,15 @@
                                 {{ care.description }}
                             </p>
                         </div>
-{#                        <div class="col-4 col-md-3">#}
-{#                            <div class="btn-group" role="group">#}
-{#                                <button type="button" class=" btn btn-outline-dark">#}
-{#                                    <a class="text-decoration-none" href="{{ path('edit_vaccine',#}
-{#                                        {   'animalId': animal.id,#}
-{#                                            'vaccineId': vaccine.id }) }}">#}
-{#                                        <span class=" fs-4 text-warning"> &#10000;</span>#}
-{#                                    </a>#}
-{#                                </button>#}
+                        <div class="col-4 col-md-3">
+                            <div class="btn-group" role="group">
+                                <button type="button" class=" btn btn-outline-dark">
+                                    <a class="text-decoration-none" href="{{ path('edit_care',
+                                        {   'animalId': animal.id,
+                                            'careId': care.id }) }}">
+                                        <span class=" fs-4 text-warning"> &#10000;</span>
+                                    </a>
+                                </button>
 
 {#                                <button type="button" class="btn btn-outline-dark">#}
 {#                                    <a c href="{{ path('delete_vaccine',#}
