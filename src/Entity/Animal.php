@@ -55,9 +55,15 @@ class Animal
      */
     private $preventions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Visit::class, mappedBy="animal", orphanRemoval=true)
+     */
+    private $visits;
+
     public function __construct()
     {
         $this->preventions = new ArrayCollection();
+        $this->visits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -161,6 +167,36 @@ class Animal
             // set the owning side to null (unless already changed)
             if ($prevention->getAnimal() === $this) {
                 $prevention->setAnimal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Visit[]
+     */
+    public function getVisits(): Collection
+    {
+        return $this->visits;
+    }
+
+    public function addVisit(Visit $visit): self
+    {
+        if (!$this->visits->contains($visit)) {
+            $this->visits[] = $visit;
+            $visit->setAnimal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisit(Visit $visit): self
+    {
+        if ($this->visits->removeElement($visit)) {
+            // set the owning side to null (unless already changed)
+            if ($visit->getAnimal() === $this) {
+                $visit->setAnimal(null);
             }
         }
 
