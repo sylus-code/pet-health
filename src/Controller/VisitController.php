@@ -15,14 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class VisitController extends AbstractController
 {
     /**
+     * @var VisitRepository
+     */
+    private $visitRepository;
+
+    public function __construct(VisitRepository $visitRepository)
+    {
+        $this->visitRepository = $visitRepository;
+    }
+
+    /**
      * @Route("/animal/{id}/visit", name="visit")
      * @param Animal $animal
-     * @param VisitRepository $visitRepository
      * @return Response
      */
-    public function index(Animal $animal, VisitRepository $visitRepository): Response
+    public function index(Animal $animal): Response
     {
-        $visits = $visitRepository->findBy(['animal' => $animal]);
+        $visits = $this->visitRepository->findBy(['animal' => $animal]);
+
         return $this->render(
             'visit/index.html.twig',
             [
@@ -34,6 +44,9 @@ class VisitController extends AbstractController
 
     /**
      * @Route("/animal/{id}/visit/create", name="create_visit")
+     * @param Animal $animal
+     * @param Request $request
+     * @return Response
      */
     public function create(Animal $animal, Request $request): Response
     {
