@@ -114,4 +114,30 @@ class VisitController extends AbstractController
             ]
         );
     }
+
+    /**
+     * @param Visit $visit
+     * @return Response
+     * @Route("/visit/{id}/delete", name="delete_visit")
+     */
+    public function delete(Visit $visit): Response
+    {
+        $animal = $visit->getAnimal();
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($visit);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'success',
+            'Wizyta została usunięta!'
+        );
+
+        return $this->redirectToRoute(
+            'visit',
+            [
+                'id' => $animal->getId()
+            ]
+        );
+    }
 }
