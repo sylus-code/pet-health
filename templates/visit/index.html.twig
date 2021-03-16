@@ -24,7 +24,7 @@
                         <div class="col-4 col-md-3">
                             <div class="btn-group" role="group">
                                 <button type="button" class=" btn btn-outline-dark">
-                                    <a class="text-decoration-none" href="{{path('edit_visit',
+                                    <a class="text-decoration-none" href="{{ path('edit_visit',
                                         {   'animalId': animal.id,
                                             'visitId': visit.id
                                         }) }}">
@@ -34,16 +34,13 @@
 
                                 <button type="button" class="btn btn-outline-dark">
                                     <a c href="{{ path('delete_visit',
-                                        {   'animalId': animal.id,
-                                            'visitId': visit.id }) }}">
+                                        {'id': visit.id }) }}">
                                         <span class=" btn-close"> &#9587;</span>
                                     </a>
                                 </button>
                             </div>
                         </div>
                     </div>
-
-
                 </li>
             {% endfor %}
         </ul>

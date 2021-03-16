@@ -116,13 +116,14 @@ class VisitController extends AbstractController
     }
 
     /**
+     * @param Visit $visit
      * @return Response
-     * @Route("/animal/{animalId}/visit/{visitId}/delete", name="delete_visit")
-     * @ParamConverter("animal", class="App\Entity\Animal", options={"id" = "animalId"})
-     * @ParamConverter("visit", class="App\Entity\Visit", options={"id" = "visitId"})
+     * @Route("/visit/{id}/delete", name="delete_visit")
      */
-    public function delete(Animal $animal, Visit $visit): Response
+    public function delete(Visit $visit): Response
     {
+        $animal = $visit->getAnimal();
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($visit);
         $entityManager->flush();
