@@ -3,12 +3,12 @@
     <div class="container">
         <div>
             <h5 class="text-center">Objawy</h5>
-{#            <p class=" text-start" role="button">#}
-{#                <a class="btn btn-warning" href=" {{ path('create_visit', {'id': animal.id }) }}">#}
-{#                    Dodaj wizytę#}
-{#                </a>#}
+            <p class=" text-start" role="button">
+                <a class="btn btn-warning" href=" {{ path('create_symptom', {'id': animal.id }) }}">
+                    Dodaj objawy
+                </a>
 
-{#            </p>#}
+            </p>
         </div>
         <ul class="list-group">
             {% for symptom in symptoms %}

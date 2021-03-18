@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Symptom;
+use App\Entity\Visit;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,8 +16,7 @@ class SymptomType extends AbstractType
         $builder
             ->add('description')
             ->add('date')
-            ->add('visits')
-            ->add('animal')
+            ->add('save', SubmitType::class)
         ;
     }
 
