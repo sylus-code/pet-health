@@ -60,10 +60,16 @@ class Animal
      */
     private $visits;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Symptom::class, mappedBy="animal", orphanRemoval=true)
+     */
+    private $symptoms;
+
     public function __construct()
     {
         $this->preventions = new ArrayCollection();
         $this->visits = new ArrayCollection();
+        $this->symptoms = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,6 +203,36 @@ class Animal
             // set the owning side to null (unless already changed)
             if ($visit->getAnimal() === $this) {
                 $visit->setAnimal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Symptom[]
+     */
+    public function getSymptoms(): Collection
+    {
+        return $this->symptoms;
+    }
+
+    public function addSymptom(Symptom $symptom): self
+    {
+        if (!$this->symptoms->contains($symptom)) {
+            $this->symptoms[] = $symptom;
+            $symptom->setAnimal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSymptom(Symptom $symptom): self
+    {
+        if ($this->symptoms->removeElement($symptom)) {
+            // set the owning side to null (unless already changed)
+            if ($symptom->getAnimal() === $this) {
+                $symptom->setAnimal(null);
             }
         }
 
