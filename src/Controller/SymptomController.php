@@ -100,7 +100,7 @@ class SymptomController extends AbstractController
                 'success',
                 'Aktualizowano niepokojący objaw!'
             );
-//var_dump($symptom->getId());die();
+
             return $this->redirectToRoute(
                 'edit_symptom',
                 [
@@ -109,9 +109,32 @@ class SymptomController extends AbstractController
                 ]
             );
         }
+
         return $this->render('symptom/edit.html.twig', [
             'form' => $form->createView(),
             'animal' => $symptom->getAnimal()
+        ]);
+    }
+
+    /**
+     * @return Response
+     * @Route("/symptom/{id}/delete", name="delete_symptom")
+     */
+    public function delete(Symptom $symptom): Response
+    {
+        $animal = $symptom->getAnimal();
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($symptom);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'success',
+            'Niepokojący objaw został usunięty!'
+        );
+
+        return $this->redirectToRoute('symptom',[
+            'id' => $animal->getId()
         ]);
     }
 }
