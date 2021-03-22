@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Animal;
 use App\Form\AnimalType;
 use App\Repository\AnimalRepository;
+use App\Security\AnimalVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,8 @@ class AnimalController extends AbstractController
     public function index(AnimalRepository $animalRepository): Response
     {
         $animals = $animalRepository->findBy(['user' => $this->getUser()]);
+        $this->denyAccessUnlessGranted(AnimalVoter::ACCESS,$animals);
+
         return $this->render(
             'animal/index.html.twig',
             [
@@ -71,6 +74,8 @@ class AnimalController extends AbstractController
      */
     public function show(Animal $animal): Response
     {
+        $this->denyAccessUnlessGranted(AnimalVoter::ACCESS, $animal);
+
         return $this->render(
             'animal/show.html.twig',
             [
@@ -86,6 +91,8 @@ class AnimalController extends AbstractController
      */
     public function delete(Animal $animal): Response
     {
+        $this->denyAccessUnlessGranted(AnimalVoter::ACCESS, $animal);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($animal);
         $em->flush();
@@ -107,6 +114,8 @@ class AnimalController extends AbstractController
      */
     public function update(Animal $animal, Request $request, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted(AnimalVoter::ACCESS, $animal);
+
         $form = $this->createForm(AnimalType::class, $animal, ['btn-label' => "Aktualizuj"]);
         $form->handleRequest($request);
 
