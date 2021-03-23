@@ -15,15 +15,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AnimalController extends AbstractController
 {
+    private $animalRepository;
+
+    public function __construct(AnimalRepository $animalRepository)
+    {
+        $this->animalRepository = $animalRepository;
+    }
+
     /**
-     * @param AnimalRepository $animalRepository
      * @return Response
      * @Route("/", name="index")
      */
-    public function index(AnimalRepository $animalRepository): Response
+    public function index(): Response
     {
-        $animals = $animalRepository->findBy(['user' => $this->getUser()]);
-        $this->denyAccessUnlessGranted(AnimalVoter::ACCESS,$animals);
+        $animals = $this->animalRepository->findBy(['user' => $this->getUser()]);
+        $this->denyAccessUnlessGranted(AnimalVoter::ACCESS, $animals);
 
         return $this->render(
             'animal/index.html.twig',

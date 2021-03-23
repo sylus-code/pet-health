@@ -2,14 +2,14 @@
 
 namespace App\Security;
 
-use App\Entity\Animal;
+use App\Entity\Prevention;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class AnimalVoter extends Voter
+class PreventionVoter extends Voter
 {
-    public const ACCESS = 'access';
+    public const ACCESS = 'acces';
 
     /**
      * @inheritDoc
@@ -22,8 +22,8 @@ class AnimalVoter extends Voter
         if (is_array($subject)) {
             $subject = $subject[0];
         }
-        // handle only Animal objects
-        if (!$subject instanceof Animal) {
+        // handle only Prevention objects
+        if (!$subject instanceof Prevention) {
             return false;
         }
 
@@ -36,18 +36,18 @@ class AnimalVoter extends Voter
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
+
         if (!$user instanceof User) {
             // if user is not logged in, deny access
             return false;
         }
-        /** @var Animal $animal * */
-
+        /** @var Prevention $prevention */
         if (is_array($subject)) {
-            $animal = $subject[0];
+            $prevention = $subject[0];
         } else {
-            $animal = $subject;
+            $prevention = $subject;
         }
 
-        return $user === $animal->getUser();
+        return $user === $prevention->getAnimal()->getUser();
     }
 }
