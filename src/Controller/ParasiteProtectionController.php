@@ -35,7 +35,7 @@ class ParasiteProtectionController extends AbstractController
                 'animal' => $animal
             ]
         );
-        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS,$parasiteProtections);
+        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $parasiteProtections);
 
         return $this->render(
             'parasite-protection/index.html.twig',
