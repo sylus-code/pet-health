@@ -7,7 +7,6 @@ use App\Entity\Prevention;
 use App\Form\VaccineType;
 use App\Repository\PreventionRepository;
 use App\Security\PreventionVoter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -7,7 +7,6 @@ use App\Entity\Visit;
 use App\Form\VisitType;
 use App\Repository\VisitRepository;
 use App\Security\VisitVoter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +30,7 @@ class VisitController extends AbstractController
     {
         $visits = $this->visitRepository->findBy(['animal' => $animal]);
 
-     //   $this->denyAccessUnlessGranted(VisitVoter::ACCESS, $visits);
+        $this->denyAccessUnlessGranted(VisitVoter::ACCESS, $visits);
 
         return $this->render(
             'visit/index.html.twig',
@@ -85,14 +84,11 @@ class VisitController extends AbstractController
 
     /**
      * @param Visit $visit
-     * @param Animal $animal
      * @param Request $request
      * @return Response
-     * @Route("/animal/{animalId}/visit/{visitId}/edit", name="edit_visit")
-     * @ParamConverter("animal", class="App\Entity\Animal", options={"id" = "animalId"})
-     * @ParamConverter("visit", class="App\Entity\Visit", options={"id" = "visitId"})
+     * @Route("/visit/{id}/edit", name="edit_visit")
      */
-    public function update(Visit $visit, Animal $animal, Request $request): Response
+    public function update(Visit $visit, Request $request): Response
     {
         $this->denyAccessUnlessGranted(VisitVoter::ACCESS, $visit);
 
@@ -115,8 +111,7 @@ class VisitController extends AbstractController
             return $this->redirectToRoute(
                 'edit_visit',
                 [
-                    'animalId' => $animal->getId(),
-                    'visitId' => $visit->getId()
+                    'id' => $visit->getId()
                 ]
             );
         }
@@ -125,7 +120,7 @@ class VisitController extends AbstractController
             'visit/edit.html.twig',
             [
                 'form' => $form->createView(),
-                'animal' => $animal
+                'animal' => $visit->getAnimal()
             ]
         );
     }
