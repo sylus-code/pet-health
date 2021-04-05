@@ -24,7 +24,7 @@ class AnimalController extends AbstractController
 
     /**
      * @return Response
-     * @Route("/", name="index")
+     * @Route("/animal", name="animal_index")
      */
     public function index(): Response
     {

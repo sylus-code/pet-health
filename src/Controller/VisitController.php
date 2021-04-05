@@ -36,7 +36,8 @@ class VisitController extends AbstractController
             'visit/index.html.twig',
             [
                 'visits' => $visits,
-                'animal' => $animal
+                'animal' => $animal,
+                'currentTab' => 'visits'
             ]
         );
     }

@@ -40,7 +40,8 @@ class ParasiteProtectionController extends AbstractController
             'parasite-protection/index.html.twig',
             [
                 'parasiteProtections' => $parasiteProtections,
-                'animal' => $animal
+                'animal' => $animal,
+                'currentTab' => 'parasiteProtections'
             ]
         );
     }

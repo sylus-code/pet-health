@@ -40,7 +40,8 @@ class VaccineController extends AbstractController
             'vaccine/index.html.twig',
             [
                 'vaccines' => $vaccines,
-                'animal' => $animal
+                'animal' => $animal,
+                'currentTab' => 'vaccines'
             ]
         );
     }
