@@ -6,6 +6,7 @@ use App\Entity\Animal;
 use App\Entity\Symptom;
 use App\Form\SymptomType;
 use App\Repository\SymptomRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,8 @@ class SymptomController extends AbstractController
 
     /**
      * @Route("/animal/{id}/symptom", name="symptom")
+     * @param Animal $animal
+     * @return Response
      */
     public function index(Animal $animal): Response
     {
@@ -48,7 +51,7 @@ class SymptomController extends AbstractController
         $form = $this->createForm(SymptomType::class, $symptom);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $symptom->setAnimal($animal);
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -73,5 +76,42 @@ class SymptomController extends AbstractController
                 'animal' => $animal
             ]
         );
+    }
+
+    /**
+     * @param Symptom $symptom
+     * @param Request $request
+     * @return Response
+     * @Route ("/animal/{animalId}/symptom/{symptomId}/edit", name="edit_symptom")
+     * @ParamConverter("animal", class="App\Entity\Animal", options={"id" = "animalId"})
+     * @ParamConverter("symptom", class="App\Entity\Symptom", options={"id" = "symptomId"})
+     */
+    public function update(Symptom $symptom, Request $request): Response
+    {
+        $form = $this->createForm(SymptomType::class, $symptom);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($symptom);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Aktualizowano niepokojący objaw!'
+            );
+//var_dump($symptom->getId());die();
+            return $this->redirectToRoute(
+                'edit_symptom',
+                [
+                    'animalId' => $symptom->getAnimal()->getId(),
+                    'symptomId' => $symptom->getId()
+                ]
+            );
+        }
+        return $this->render('symptom/edit.html.twig', [
+            'form' => $form->createView(),
+            'animal' => $symptom->getAnimal()
+        ]);
     }
 }
