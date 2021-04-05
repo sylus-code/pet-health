@@ -24,16 +24,14 @@
 
                                 <button type="button" class=" btn btn-outline-dark">
                                     <a class="text-decoration-none" href="{{ path('edit_parasite_protection',
-                                        {   'animalId': animal.id,
-                                            'parasiteProtectionId': parasiteProtection.id }) }}">
+                                        {   'id': parasiteProtection.id }) }}">
                                         <span class=" fs-4 text-warning"> &#10000;</span>
                                     </a>
                                 </button>
 
                                 <button type="button" class="btn btn-outline-dark">
                                     <a c href="{{ path('delete_parasite_protection',
-                                        {   'animalId': animal.id,
-                                            'parasiteProtectionId': parasiteProtection.id }) }}">
+                                        { 'id': parasiteProtection.id }) }}">
                                         <span class=" btn-close"> &#9587;</span>
                                     </a>
                                 </button>

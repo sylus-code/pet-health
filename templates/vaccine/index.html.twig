@@ -24,16 +24,14 @@
                             <div class="btn-group" role="group">
                                 <button type="button" class=" btn btn-outline-dark">
                                     <a class="text-decoration-none" href="{{ path('edit_vaccine',
-                                        {   'animalId': animal.id,
-                                            'vaccineId': vaccine.id }) }}">
+                                        { 'id': vaccine.id }) }}">
                                         <span class=" fs-4 text-warning"> &#10000;</span>
                                     </a>
                                 </button>
 
                                 <button type="button" class="btn btn-outline-dark">
                                     <a c href="{{ path('delete_vaccine',
-                                        {   'animalId': animal.id,
-                                            'vaccineId': vaccine.id }) }}">
+                                        { 'id': vaccine.id }) }}">
                                         <span class=" btn-close"> &#9587;</span>
                                     </a>
                                 </button>

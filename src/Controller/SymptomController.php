@@ -85,9 +85,7 @@ class SymptomController extends AbstractController
      * @param Symptom $symptom
      * @param Request $request
      * @return Response
-     * @Route ("/animal/{animalId}/symptom/{symptomId}/edit", name="edit_symptom")
-     * @ParamConverter("animal", class="App\Entity\Animal", options={"id" = "animalId"})
-     * @ParamConverter("symptom", class="App\Entity\Symptom", options={"id" = "symptomId"})
+     * @Route ("/symptom/{id}/edit", name="edit_symptom")
      */
     public function update(Symptom $symptom, Request $request): Response
     {
@@ -108,16 +106,18 @@ class SymptomController extends AbstractController
             return $this->redirectToRoute(
                 'edit_symptom',
                 [
-                    'animalId' => $symptom->getAnimal()->getId(),
-                    'symptomId' => $symptom->getId()
+                    'id' => $symptom->getId()
                 ]
             );
         }
 
-        return $this->render('symptom/edit.html.twig', [
-            'form' => $form->createView(),
-            'animal' => $symptom->getAnimal()
-        ]);
+        return $this->render(
+            'symptom/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'animal' => $symptom->getAnimal()
+            ]
+        );
     }
 
     /**
@@ -139,8 +139,11 @@ class SymptomController extends AbstractController
             'Niepokojący objaw został usunięty!'
         );
 
-        return $this->redirectToRoute('symptom',[
-            'id' => $animal->getId()
-        ]);
+        return $this->redirectToRoute(
+            'symptom',
+            [
+                'id' => $animal->getId()
+            ]
+        );
     }
 }
