@@ -6,6 +6,7 @@ use App\Entity\Animal;
 use App\Entity\Visit;
 use App\Form\VisitType;
 use App\Repository\VisitRepository;
+use App\Security\VisitVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class VisitController extends AbstractController
 {
+    private $visitRepository;
+
+    public function __construct(VisitRepository $visitRepository)
+    {
+        $this->visitRepository = $visitRepository;
+    }
+
     /**
      * @var VisitRepository
      */
@@ -32,6 +40,8 @@ class VisitController extends AbstractController
     public function index(Animal $animal): Response
     {
         $visits = $this->visitRepository->findBy(['animal' => $animal]);
+
+        $this->denyAccessUnlessGranted(VisitVoter::ACCESS, $visits);
 
         return $this->render(
             'visit/index.html.twig',
@@ -94,6 +104,8 @@ class VisitController extends AbstractController
      */
     public function update(Visit $visit, Animal $animal, Request $request): Response
     {
+        $this->denyAccessUnlessGranted(VisitVoter::ACCESS, $visit);
+
         $form = $this->createForm(VisitType::class, $visit);
         $form->handleRequest($request);
 
@@ -135,6 +147,7 @@ class VisitController extends AbstractController
      */
     public function delete(Visit $visit): Response
     {
+        $this->denyAccessUnlessGranted(VisitVoter::ACCESS, $visit);
         $animal = $visit->getAnimal();
 
         $entityManager = $this->getDoctrine()->getManager();

@@ -6,6 +6,7 @@ use App\Entity\Animal;
 use App\Entity\Prevention;
 use App\Form\VaccineType;
 use App\Repository\PreventionRepository;
+use App\Security\PreventionVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,17 +15,27 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class VaccineController extends AbstractController
 {
+    private $preventionRepository;
+
+    public function __construct(PreventionRepository $preventionRepository)
+    {
+        $this->preventionRepository = $preventionRepository;
+    }
+
     /**
      * @Route("/animal/{id}/vaccine", name="vaccine")
+     * @param Animal $animal
+     * @return Response
      */
-    public function index(Animal $animal, PreventionRepository $preventionRepository): Response
+    public function index(Animal $animal): Response
     {
-        $vaccines = $preventionRepository->findBy(
+        $vaccines = $this->preventionRepository->findBy(
             [
                 'type' => Prevention::VACCINE,
                 'animal' => $animal
             ]
         );
+        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $vaccines);
 
         return $this->render(
             'vaccine/index.html.twig',
@@ -37,6 +48,9 @@ class VaccineController extends AbstractController
 
     /**
      * @Route("/animal/{id}/vaccine/create", name="create_vaccine")
+     * @param Animal $animal
+     * @param Request $request
+     * @return Response
      */
     public function create(Animal $animal, Request $request): Response
     {
@@ -71,9 +85,15 @@ class VaccineController extends AbstractController
      * @Route("/animal/{animalId}/vaccine/{vaccineId}/edit", name="edit_vaccine")
      * @ParamConverter("vaccine", class="App\Entity\Prevention", options={"id" = "vaccineId"})
      * @ParamConverter ("animal", class="App\Entity\Animal", options={"id" = "animalId"})
+     * @param Prevention $vaccine
+     * @param Animal $animal
+     * @param Request $request
+     * @return Response
      */
     public function update(Prevention $vaccine, Animal $animal, Request $request): Response
     {
+        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $vaccine);
+
         $form = $this->createForm(VaccineType::class, $vaccine);
         $form->handleRequest($request);
 
@@ -104,12 +124,17 @@ class VaccineController extends AbstractController
     }
 
     /**
+     * @param Prevention $vaccine
+     * @param Animal $animal
+     * @return Response
      * @Route("/animal/{animalId}/vaccine/{vaccineId}/delete", name="delete_vaccine")
      * @ParamConverter("vaccine", class="App\Entity\Prevention", options={"id" = "vaccineId"})
      * @ParamConverter ("animal", class="App\Entity\Animal", options={"id" = "animalId"})
      */
     public function delete(Prevention $vaccine, Animal $animal): Response
     {
+        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $vaccine);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($vaccine);
         $em->flush();

@@ -6,7 +6,7 @@ use App\Entity\Animal;
 use App\Entity\Prevention;
 use App\Form\ParasiteProtectionType;
 use App\Repository\PreventionRepository;
-use phpDocumentor\Reflection\Types\This;
+use App\Security\PreventionVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,17 +15,27 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ParasiteProtectionController extends AbstractController
 {
+    private $preventionRepository;
+
+    public function __construct(PreventionRepository $preventionRepository)
+    {
+        $this->preventionRepository = $preventionRepository;
+    }
+
     /**
      * @Route("/animal/{id}/parasite-protection", name="parasite_protection")
+     * @param Animal $animal
+     * @return Response
      */
-    public function index(Animal $animal, PreventionRepository $preventionRepository): Response
+    public function index(Animal $animal): Response
     {
-        $parasiteProtections = $preventionRepository->findBy(
+        $parasiteProtections = $this->preventionRepository->findBy(
             [
                 'type' => Prevention::PARASITE_PROTECTION,
                 'animal' => $animal
             ]
         );
+        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $parasiteProtections);
 
         return $this->render(
             'parasite-protection/index.html.twig',
@@ -74,12 +84,18 @@ class ParasiteProtectionController extends AbstractController
     }
 
     /**
+     * @param Prevention $parasiteProtection
+     * @param Animal $animal
+     * @param Request $request
+     * @return Response
      * @Route("/animal/{animalId}/parasite-protection/{parasiteProtectionId}/edit", name="edit_parasite_protection")
      * @ParamConverter("parasiteProtection", class="App\Entity\Prevention", options={"id" = "parasiteProtectionId"})
      * @ParamConverter("animal", class="App\Entity\Animal", options={"id" = "animalId"})
      */
     public function update(Prevention $parasiteProtection, Animal $animal, Request $request): Response
     {
+        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $parasiteProtection);
+
         $form = $this->createForm(ParasiteProtectionType::class, $parasiteProtection);
         $form->handleRequest($request);
 
@@ -127,6 +143,8 @@ class ParasiteProtectionController extends AbstractController
      */
     public function delete(Prevention $parasiteProtection, Animal $animal): Response
     {
+        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $parasiteProtection);
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($parasiteProtection);
         $entityManager->flush();

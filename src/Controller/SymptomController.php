@@ -6,6 +6,7 @@ use App\Entity\Animal;
 use App\Entity\Symptom;
 use App\Form\SymptomType;
 use App\Repository\SymptomRepository;
+use App\Security\SymptomVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,8 @@ class SymptomController extends AbstractController
     public function index(Animal $animal): Response
     {
         $symptoms = $this->symptomRepository->findBy(['animal' => $animal]);
+        $this->denyAccessUnlessGranted(SymptomVoter::ACCESS, $symptoms);
+
         return $this->render(
             'symptom/index.html.twig',
             [
@@ -88,6 +91,7 @@ class SymptomController extends AbstractController
      */
     public function update(Symptom $symptom, Request $request): Response
     {
+        $this->denyAccessUnlessGranted(SymptomVoter::ACCESS, $symptom);
         $form = $this->createForm(SymptomType::class, $symptom);
         $form->handleRequest($request);
 
@@ -117,11 +121,13 @@ class SymptomController extends AbstractController
     }
 
     /**
+     * @param Symptom $symptom
      * @return Response
      * @Route("/symptom/{id}/delete", name="delete_symptom")
      */
     public function delete(Symptom $symptom): Response
     {
+        $this->denyAccessUnlessGranted(SymptomVoter::ACCESS, $symptom);
         $animal = $symptom->getAnimal();
 
         $entityManager = $this->getDoctrine()->getManager();

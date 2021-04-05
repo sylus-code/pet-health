@@ -6,6 +6,7 @@ use App\Entity\Animal;
 use App\Entity\Prevention;
 use App\Form\CareType;
 use App\Repository\PreventionRepository;
+use App\Security\PreventionVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,20 +15,29 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CareController extends AbstractController
 {
+    private $preventionRepository;
+
+    public function __construct(PreventionRepository $preventionRepository)
+    {
+        $this->preventionRepository = $preventionRepository;
+    }
+
     /**
      * @Route("/animal/{id}/care", name="care")
      * @param Animal $animal
-     * @param PreventionRepository $preventionRepository
      * @return Response
      */
-    public function index(Animal $animal, PreventionRepository $preventionRepository): Response
+    public function index(Animal $animal): Response
     {
-        $cares = $preventionRepository->findBy(
+        $cares = $this->preventionRepository->findBy(
             [
                 'type' => Prevention::CARE,
                 'animal' => $animal
             ]
         );
+
+        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $cares);
+
         return $this->render(
             'care/index.html.twig',
             [
@@ -89,6 +99,8 @@ class CareController extends AbstractController
      */
     public function update(Prevention $care, Animal $animal, Request $request): Response
     {
+        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $care);
+
         $form = $this->createForm(CareType::class, $care);
         $form->handleRequest($request);
 
@@ -133,6 +145,8 @@ class CareController extends AbstractController
      */
     public function delete(Animal $animal, Prevention $care): Response
     {
+        $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $care);
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($care);
         $entityManager->flush();
