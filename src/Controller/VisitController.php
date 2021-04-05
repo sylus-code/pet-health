@@ -23,6 +23,16 @@ class VisitController extends AbstractController
     }
 
     /**
+     * @var VisitRepository
+     */
+    private $visitRepository;
+
+    public function __construct(VisitRepository $visitRepository)
+    {
+        $this->visitRepository = $visitRepository;
+    }
+
+    /**
      * @Route("/animal/{id}/visit", name="visit")
      * @param Animal $animal
      * @return Response
@@ -31,7 +41,7 @@ class VisitController extends AbstractController
     {
         $visits = $this->visitRepository->findBy(['animal' => $animal]);
 
-     //   $this->denyAccessUnlessGranted(VisitVoter::ACCESS, $visits);
+        $this->denyAccessUnlessGranted(VisitVoter::ACCESS, $visits);
 
         return $this->render(
             'visit/index.html.twig',
