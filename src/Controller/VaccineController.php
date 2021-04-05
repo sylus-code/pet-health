@@ -82,15 +82,12 @@ class VaccineController extends AbstractController
     }
 
     /**
-     * @Route("/animal/{animalId}/vaccine/{vaccineId}/edit", name="edit_vaccine")
-     * @ParamConverter("vaccine", class="App\Entity\Prevention", options={"id" = "vaccineId"})
-     * @ParamConverter ("animal", class="App\Entity\Animal", options={"id" = "animalId"})
+     * @Route("/vaccine/{id}/edit", name="edit_vaccine")
      * @param Prevention $vaccine
-     * @param Animal $animal
      * @param Request $request
      * @return Response
      */
-    public function update(Prevention $vaccine, Animal $animal, Request $request): Response
+    public function update(Prevention $vaccine, Request $request): Response
     {
         $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $vaccine);
 
@@ -109,8 +106,7 @@ class VaccineController extends AbstractController
             return $this->redirectToRoute(
                 'edit_vaccine',
                 [
-                    'animalId' => $animal->getId(),
-                    'vaccineId' => $vaccine->getId()
+                    'id' => $vaccine->getId()
                 ]
             );
         }
@@ -118,20 +114,17 @@ class VaccineController extends AbstractController
             'vaccine/edit.html.twig',
             [
                 'form' => $form->createView(),
-                'animal' => $animal
+                'animal' => $vaccine->getAnimal()
             ]
         );
     }
 
     /**
      * @param Prevention $vaccine
-     * @param Animal $animal
      * @return Response
-     * @Route("/animal/{animalId}/vaccine/{vaccineId}/delete", name="delete_vaccine")
-     * @ParamConverter("vaccine", class="App\Entity\Prevention", options={"id" = "vaccineId"})
-     * @ParamConverter ("animal", class="App\Entity\Animal", options={"id" = "animalId"})
+     * @Route("/vaccine/{id}/delete", name="delete_vaccine")
      */
-    public function delete(Prevention $vaccine, Animal $animal): Response
+    public function delete(Prevention $vaccine): Response
     {
         $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $vaccine);
 
@@ -147,7 +140,7 @@ class VaccineController extends AbstractController
         return $this->redirectToRoute(
             'vaccine',
             [
-                'id' => $animal->getId()
+                'id' => $vaccine->getAnimal()->getId()
             ]
         );
     }
