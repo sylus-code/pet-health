@@ -1,13 +1,9 @@
 {% extends "base.html.twig" %}
 {% block body %}
+    {% include('navbar.html.twig') %}
     <div class="container">
-        <h1 class="text-center">Moje Zwierzaki</h1>
-        <div class="d-flex ">
-            <p class="p-2 flex-grow-1 " role="button"><a href="{{ path('create_animal') }}" class="btn btn-warning">&#8853;
-                    Dodaj zwierza</a></p>
-
-            <a href="{{ path('app_logout') }}" class="p-2"><span class="btn btn-dark ">&#9212; Wyloguj</span> </a>
-        </div>
+        <p role="button"><a href="{{ path('create_animal') }}" class="btn btn-warning mt-2">&#8853;
+                Dodaj zwierza</a></p>
         <ul class="list-unstyled mt-1">
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for animal in animals %}
