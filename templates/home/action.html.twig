@@ -19,17 +19,15 @@
                 <span class="navbar-toggler-icon pr-3"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav topnav">
-                    <a class="btn text-dark border-secondary" href="{{ path('app_login') }}">
+                <div class="navbar-nav topnav ">
+                    <a class="btn text-dark" href="{{ path('app_login') }}">
                         {# <button class="btn btn-outline-dark" type="submit"> #}
                         Zaloguj
                         {# </button> #}</a>
-                    <a class="btn text-dark border-secondary border-top-0" href="{{ path('app_logout') }}">
+                    <a class="btn text-dark" href="{{ path('app_logout') }}">
                         {# <button class="btn btn-outline-success" type="submit"> #}
                         Zarejestruj
-                        {# </button> #}
-                    </a>
-
+                        {# </button> #}</a>
                 </div>
                 <a href="javascript:void(0);" onclick="openMenu()"></a>
             </div>
@@ -73,11 +71,14 @@
         }
 
         .topnav a {
+            border-top: 1px solid #6c757d;
+
             color: white;
             padding: 14px 16px;
             text-decoration: none;
             font-size: 17px;
             display: block;
+
         }
 
         #home {
@@ -124,7 +125,7 @@
         }
 
         /* desktop */
-        @media screen and (min-width: 1400px) {
+        @media screen and (min-width: 1000px) {
             /* Specific to this particular image */
             img.bg {
                 /* Set rules to fill background */
@@ -132,22 +133,34 @@
                 min-width: 100%;
 
                 /* Set up proportionate scaling */
-                width: 100%;
-                height: 100%;
+                /*width: 100%;*/
+                height: calc(100vh - 90px);
 
                 /* Set up positioning */
-                position: fixed;
-                top: 110px;
-                left: 0;
+                /*position: fixed;*/
+                top: 60px;
+                /*left: 0;*/
+                overflow: hidden;
+            }
+            #navbarNavAltMarkup{
+                flex-grow: 0;
+                /*border: 1px solid #6c757d;*/
+                margin-right: 1rem;
+            }
+            .topnav a {
+                border: 1px solid #6c757d;
+                margin-right: .25rem
             }
         }
+
 
     </style>
     <div id="home">
         <picture>
-            <source media="(max-width: 600px)" srcset="{{ asset('collage_mobile1.jpg', 'images') }}">
-            <source media="(min-width: 760px)" srcset="{{ asset('collage_mobile22.jpg', 'images') }}">
-            <source media="(min-width: 1000px)" srcset="{{ asset('collage_desktop.jpg', 'images') }}">
+            <source media="(max-width: 599px)" srcset="{{ asset('collage_mobile1.jpg', 'images') }}">
+            <source media="(min-width: 600px) and (max-width: 1024px)" srcset="{{ asset('collage_mobile22.jpg', 'images') }}">
+            <source media="(min-width: 1023px) and (max-width: 1599px)" srcset="{{ asset('collage_desktop.jpg', 'images') }}">
+            <source media="(min-width: 1600px)" srcset="{{ asset('collage_fullscreen.jpg', 'images') }}">
 
             <img class="bg" src="{{ asset('collage_mobile1.pg', 'images') }}" alt="Nasze zwierzaki">
         </picture>
