@@ -15,14 +15,22 @@ class VaccineType extends AbstractType
         $builder
             ->add('description')
             ->add('date')
-            ->add('save', SubmitType::class)
-        ;
+            ->add(
+                'save',
+                SubmitType::class,
+                [
+                    'label' => $options['btn-label'],
+                    'attr' => ['class' => 'btn btn-outline-warning mt-3']
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Prevention::class,
-        ]);
+        $resolver->setDefaults(
+            [
+                'btn-label' => "Zapisz szczepienie"
+            ]
+        );
     }
 }

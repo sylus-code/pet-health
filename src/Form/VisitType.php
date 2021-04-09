@@ -15,14 +15,22 @@ class VisitType extends AbstractType
         $builder
             ->add('date')
             ->add('description')
-            ->add('save', SubmitType::class)
-        ;
+            ->add(
+                'save',
+                SubmitType::class,
+                [
+                    'label' => $options['btn-label'],
+                    'attr' => ['class' => 'btn btn-outline-warning mt-3']
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Visit::class,
-        ]);
+        $resolver->setDefaults(
+            [
+                'btn-label' => "Zapisz wizytę"
+            ]
+        );
     }
 }
