@@ -50,7 +50,7 @@ img.bg {
     img.bg {
         min-width: 100%;
         height: calc(100vh - 90px);
-        top: 60px;
+        top: 90px;
         overflow: hidden;
     }
 
