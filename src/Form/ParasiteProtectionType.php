@@ -29,7 +29,7 @@ class ParasiteProtectionType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'btn-label' => "Zapisz zabezpieczenie"
+                'btn-label' => "Zapisz"
             ]
         );
     }

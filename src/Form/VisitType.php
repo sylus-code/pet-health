@@ -29,7 +29,7 @@ class VisitType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'btn-label' => "Zapisz wizytę"
+                'btn-label' => "Zapisz"
             ]
         );
     }

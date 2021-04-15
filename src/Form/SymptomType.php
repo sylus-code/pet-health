@@ -30,7 +30,7 @@ class SymptomType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'btn-label' => "Zapisz objaw"
+                'btn-label' => "Zapisz"
             ]
         );
     }

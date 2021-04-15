@@ -40,7 +40,7 @@ class AnimalType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'btn-label' => "⊕Dodaj zwierzaka"
+                'btn-label' => "⊕Dodaj"
             ]
         );
     }

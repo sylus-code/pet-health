@@ -24,7 +24,7 @@ class CareType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'btn-label' => "Zapisz pielęgnację"
+                'btn-label' => "Zapisz"
             ]
         );
     }

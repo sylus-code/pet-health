@@ -29,7 +29,7 @@ class VaccineType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'btn-label' => "Zapisz szczepienie"
+                'btn-label' => "Zapisz"
             ]
         );
     }
