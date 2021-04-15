@@ -41,7 +41,8 @@ class CareController extends AbstractController
             'care/index.html.twig',
             [
                 'cares' => $cares,
-                'animal' => $animal
+                'animal' => $animal,
+                'currentTab' => 'cares'
             ]
         );
     }

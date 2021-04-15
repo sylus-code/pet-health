@@ -11,6 +11,10 @@ framework:
         cookie_secure: auto
         cookie_samesite: lax
 
+    assets:
+        packages:
+            images:
+                base_urls: '%env(BASE_URL)%/img'
     #esi: true
     #fragments: true
     php_errors:

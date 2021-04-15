@@ -2,10 +2,9 @@
 {% block tabcontent %}
     <div class="container">
         <div>
-            <h5 class="text-center">Zabezpieczenie na pasożyty</h5>
             <p class=" text-start" role="button">
                 <a class="btn btn-warning" href=" {{ path('create_parasite_protection', {'id': animal.id }) }}">
-                    Dodaj zabezpieczenie na pasożyty
+                    ⊕Dodaj zabezpieczenie na pasożyty
                 </a>
             </p>
         </div>
@@ -13,7 +12,7 @@
             {% for parasiteProtection in parasiteProtections %}
                 <li class="list-group-item">
                     <div class="row g-0">
-                        <div class="col-sm-8 col-md-9">
+                        <div class="col-sm-8 col-md-9 text-start">
                             <p class="fs-5 mt-2">
                                 {{ parasiteProtection.date|date("m/d/Y") }}
                                 {{ parasiteProtection.description }}

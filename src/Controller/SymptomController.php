@@ -36,7 +36,8 @@ class SymptomController extends AbstractController
             'symptom/index.html.twig',
             [
                 'symptoms' => $symptoms,
-                'animal' => $animal
+                'animal' => $animal,
+                'currentTab' => 'symptoms'
             ]
         );
     }
