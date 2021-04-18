@@ -21,7 +21,7 @@ class AnimalType extends AbstractType
             ->add(
                 'sex',
                 ChoiceType::class,
-                ['label' => 'Płeć zwierzaka: ', 'choices' => [ '♀' => true, '♂' => false]]
+                ['label' => 'Płeć zwierzaka: ', 'choices' => ['♀' => Animal::SEX_FEMALE, '♂' => Animal::SEX_MALE]]
             )
             ->add('dateOfBirth', BirthdayType::class, ['label' => 'Data urodzenia zwierzaka: '])
             ->add('species', TextType::class, ['label' => 'Gatunek zwierzaka: '])
@@ -31,7 +31,7 @@ class AnimalType extends AbstractType
                 SubmitType::class,
                 [
                     'label' => $options['btn-label'],
-                    'attr' => ['class'=>  'btn btn-outline-warning mt-3']
+                    'attr' => ['class' => 'btn btn-outline-warning mt-3']
                 ]
             );
     }

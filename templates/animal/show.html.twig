@@ -7,11 +7,7 @@
         <h5 class="card-title">{{ animal.name }}</h5>
         {{ animal.species }} |
         {{ animal.breed }} |
-        {% if animal.sex == 'female' %}
-            <span>&female;</span> |
-        {% else %}
-            <span>&male;</span> |
-        {% endif %}
+        {{ animal.sex|symbol }} |
         {{ date().diff(date(animal.dateOfBirth)).y }} lat
     </div>
     <div class="card-header">
@@ -20,7 +16,7 @@
                 <a class="nav-link text-dark active" aria-current="true" href="{{ path('visit', {'id': animal.id}) }}">Wizyty</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark"  href="{{ path('vaccine', {'id': animal.id}) }}">Szczepienia</a>
+                <a class="nav-link text-dark" href="{{ path('vaccine', {'id': animal.id}) }}">Szczepienia</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark"
