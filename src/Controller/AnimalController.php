@@ -62,7 +62,7 @@ class AnimalController extends AbstractController
                 'Zwierzak dodany!'
             );
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('animal_index');
         }
 
         return $this->render(
@@ -108,7 +108,7 @@ class AnimalController extends AbstractController
             'Zwierzak został usunięty'
         );
 
-        return $this->redirectToRoute('index');
+        return $this->redirectToRoute('animal_index');
     }
 
     /**

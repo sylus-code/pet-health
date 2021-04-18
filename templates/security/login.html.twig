@@ -27,7 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav topnav ">
 
-                    <a class="btn text-dark" href="{{ path('app_logout') }}">
+                    <a class="btn text-dark" href="{{ path('app_register') }}">
                         Zarejestruj
                     </a>
                 </div>
@@ -44,7 +44,7 @@
             You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
-<div class="w-75 p-3 mx-auto">
+<div class="w-50 p-3 mx-auto">
     <h1 class="h3 mb-3 font-weight-normal">Zaloguj się</h1>
     <label for="inputlogin">Login</label>
     <input type="text" value="{{ last_username }}" name="login" id="inputlogin" class="form-control" required autofocus>
