@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Animal
 {
+    public const SEX_FEMALE = 'f';
+    public const SEX_MALE = 'm';
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

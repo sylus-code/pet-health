@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Register{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('style/main.css') }}"/>
 {% endblock %}
 {% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light pb-0">
         <div class="container-fluid p-0 m-0">
             <a class="btn text-dark" href="{{ path('home') }}">
@@ -27,50 +31,25 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav topnav ">
 
-                    <a class="btn text-dark" href="{{ path('app_register') }}">
-                        Zarejestruj
+                    <a class="btn text-dark" href="{{ path('app_login') }}">
+                        Zaloguj
                     </a>
                 </div>
             </div>
         </div>
     </nav>
-<form  method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
-<div class="w-50 p-3 mx-auto">
-    <h1 class="h3 mb-3 font-weight-normal">Zaloguj się</h1>
-    <label for="inputlogin">Login</label>
-    <input type="text" value="{{ last_username }}" name="login" id="inputlogin" class="form-control" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
+    <div class="w-50 p-3 mx-auto">
+    <h1 class="h3 mb-3 font-weight-normal">Zarejestruj się</h1>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-    {#
-       Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-       See https://symfony.com/doc/current/security/remember_me.html
+    {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.username) }}
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+        {{ form_row(registrationForm.agreeTerms) }}
 
-       <div class="checkbox mb-3">
-           <label>
-               <input type="checkbox" name="_remember_me"> Remember me
-           </label>
-       </div>
-   #}
-
-    <button class="btn btn-lg btn-warning mt-3" type="submit">
-        Zaloguj
-    </button>
+        <button type="submit" class="btn btn-lg btn-warning mt-3">Zarejestruj</button>
+    {{ form_end(registrationForm) }}
 </div>
-
-
-
-</form>
 {% endblock %}

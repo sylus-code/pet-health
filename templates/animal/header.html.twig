@@ -2,10 +2,6 @@
     <h5 class="card-title">{{ animal.name }}</h5>
     {{ animal.species }} |
     {{ animal.breed }} |
-    {% if animal.sex == 'female' %}
-        <span>&female;</span> |
-    {% else %}
-        <span>&male;</span> |
-    {% endif %}
+    {{ animal.sex|symbol }} |
     {{ date().diff(date(animal.dateOfBirth)).y }} lat
 </div>
