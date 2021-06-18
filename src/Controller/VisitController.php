@@ -14,17 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class VisitController extends AbstractController
 {
-    private $visitRepository;
-
-    public function __construct(VisitRepository $visitRepository)
-    {
-        $this->visitRepository = $visitRepository;
-    }
-
-    /**
-     * @var VisitRepository
-     */
-    private $visitRepository;
+    private VisitRepository $visitRepository;
 
     public function __construct(VisitRepository $visitRepository)
     {
