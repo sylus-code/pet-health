@@ -19,6 +19,19 @@ class PreventionRepository extends ServiceEntityRepository
         parent::__construct($registry, Prevention::class);
     }
 
+    public function save(Prevention $prevention): void
+    {
+        $this->getEntityManager()->persist($prevention);
+        $this->getEntityManager()->flush();
+
+    }
+
+    public function delete(Prevention $prevention): void
+    {
+        $this->getEntityManager()->remove($prevention);
+        $this->getEntityManager()->flush();
+    }
+
     // /**
     //  * @return Prevention[] Returns an array of Prevention objects
     //  */

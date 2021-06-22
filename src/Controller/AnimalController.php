@@ -5,21 +5,25 @@ namespace App\Controller;
 
 use App\Entity\Animal;
 use App\Form\AnimalType;
+use App\Message\PreventionSaved;
 use App\Repository\AnimalRepository;
 use App\Security\AnimalVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AnimalController extends AbstractController
 {
-    private $animalRepository;
+    private AnimalRepository $animalRepository;
+    private MessageBusInterface $bus;
 
-    public function __construct(AnimalRepository $animalRepository)
+    public function __construct(AnimalRepository $animalRepository, MessageBusInterface $bus)
     {
         $this->animalRepository = $animalRepository;
+        $this->bus = $bus;
     }
 
     /**
@@ -30,6 +34,8 @@ class AnimalController extends AbstractController
     {
         $animals = $this->animalRepository->findBy(['user' => $this->getUser()]);
         $this->denyAccessUnlessGranted(AnimalVoter::ACCESS, $animals);
+        $this->bus->dispatch(new PreventionSaved('Cóż za wspaniała wiadomość!'));
+
 
         return $this->render(
             'animal/index.html.twig',

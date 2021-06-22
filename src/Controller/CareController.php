@@ -64,9 +64,7 @@ class CareController extends AbstractController
             $this->addFlash('warning', 'Pielęgnacja o podanym id: ' . $care->getId() . ' nie istnieje!');
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($care);
-            $entityManager->flush();
+            $this->preventionRepository->save($care);
 
             $this->addFlash(
                 'success',
@@ -104,10 +102,7 @@ class CareController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $care->setAnimal($animal);
             $care->setType(Prevention::CARE);
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($care);
-            $entityManager->flush();
+            $this->preventionRepository->save($care);
 
             $this->addFlash(
                 'success',
@@ -139,10 +134,7 @@ class CareController extends AbstractController
     public function delete(Prevention $care): Response
     {
         $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $care);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($care);
-        $entityManager->flush();
+        $this->preventionRepository->delete($care);
 
         $this->addFlash(
             'success',

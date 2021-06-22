@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ParasiteProtectionController extends AbstractController
 {
-    private $preventionRepository;
+    private PreventionRepository $preventionRepository;
 
     public function __construct(PreventionRepository $preventionRepository)
     {
@@ -62,9 +62,7 @@ class ParasiteProtectionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $parasiteProtection->setAnimal($animal);
             $parasiteProtection->setType(1);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($parasiteProtection);
-            $entityManager->flush();
+            $this->preventionRepository->save($parasiteProtection);
 
             $this->addFlash(
                 'success',
@@ -103,9 +101,7 @@ class ParasiteProtectionController extends AbstractController
             );
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($parasiteProtection);
-            $entityManager->flush();
+           $this->preventionRepository->save($parasiteProtection);
 
             $this->addFlash(
                 'success',
@@ -137,10 +133,7 @@ class ParasiteProtectionController extends AbstractController
     public function delete(Prevention $parasiteProtection): Response
     {
         $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $parasiteProtection);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($parasiteProtection);
-        $entityManager->flush();
+        $this->preventionRepository->delete($parasiteProtection);
 
         $this->addFlash(
             'success',
