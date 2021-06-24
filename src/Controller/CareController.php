@@ -5,20 +5,24 @@ namespace App\Controller;
 use App\Entity\Animal;
 use App\Entity\Prevention;
 use App\Form\CareType;
+use App\Message\PreventionCreated;
 use App\Repository\PreventionRepository;
 use App\Security\PreventionVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CareController extends AbstractController
 {
-    private $preventionRepository;
+    private PreventionRepository $preventionRepository;
+    private MessageBusInterface $bus;
 
-    public function __construct(PreventionRepository $preventionRepository)
+    public function __construct(PreventionRepository $preventionRepository, MessageBusInterface $bus)
     {
         $this->preventionRepository = $preventionRepository;
+        $this->bus = $bus;
     }
 
     /**
@@ -103,6 +107,10 @@ class CareController extends AbstractController
             $care->setAnimal($animal);
             $care->setType(Prevention::CARE);
             $this->preventionRepository->save($care);
+
+            // sprawdz czy to id juz tu jest po savie
+            $message = new PreventionCreated($care->getId());
+            $this->bus->dispatch($message);
 
             $this->addFlash(
                 'success',
