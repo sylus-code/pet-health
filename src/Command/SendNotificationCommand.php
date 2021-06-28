@@ -1,10 +1,8 @@
 <?php
 
-
 namespace App\Command;
 
-
-use App\Message\PreventionCreated;
+use App\Message\SendNotification;
 use App\Repository\NotificationRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -25,7 +23,8 @@ class SendNotificationCommand extends Command
         MessageBusInterface $bus,
         LoggerInterface $logger,
         string $name = null
-    ) {
+    )
+    {
         $this->notificationRepository = $notificationRepository;
         $this->logger = $logger;
         $this->bus = $bus;
@@ -38,7 +37,6 @@ class SendNotificationCommand extends Command
         $this
             ->setDescription('Checks if there is notification to send.')
             ->setHelp('This command lets you send notifications.');
-
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -48,7 +46,8 @@ class SendNotificationCommand extends Command
 
         foreach ($notifications as $notification) {
             $this->logger->info('dispatchuje event');
-            // dodaj dispatchowanie eventu np SendEmail
+            $message = new SendNotification($notification->getId());
+            $this->bus->dispatch($message);
         }
         return Command::SUCCESS;
     }

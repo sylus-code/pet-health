@@ -37,6 +37,11 @@ class Notification
      */
     private $status = false;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $title;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Notification
     public function setStatus(bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
