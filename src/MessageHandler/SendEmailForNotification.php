@@ -39,6 +39,7 @@ class SendEmailForNotification implements MessageHandlerInterface
         $this->logger->info('Wysyłam emaila dla notyfikacji o zbliżającym się terminie Prevention', ['event' => $notification->getTitle()]);
 
         $notification->setStatus(true);
+        $this->notificationRepository->save($notification);
     }
 
 }

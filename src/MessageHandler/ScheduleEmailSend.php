@@ -24,7 +24,7 @@ class ScheduleEmailSend implements MessageHandlerInterface
         $this->notificationRepository = $notificationRepository;
         $this->logger = $logger;
     }
-// czy tu nie trzeba dodać sendNotification event...
+
     public function __invoke(PreventionCreated $preventionCreated)
     {
         $prevention = $this->preventionRepository->findOneBy(['id' => $preventionCreated->getPreventionId()]);
@@ -36,14 +36,23 @@ class ScheduleEmailSend implements MessageHandlerInterface
     private function addNotification(string $whenToNotify,
                                      Prevention $prevention): void
     {
-        var_dump('ile: '.$whenToNotify);
-        var_dump('kiedy wizyta: '. $prevention->getDate()->format('Y-m-d'));
+        $this->logger->info(sprintf(
+            "Planuje wysyłke emaila na dzien: %s",
+            $prevention->getDate()->format('Y-m-d H:i')
+        ));
+        $temp = clone $prevention->getDate();
+        $sendDate = date_sub($temp, date_interval_create_from_date_string($whenToNotify));
 
-        $sendDate = date_sub($prevention->getDate(), date_interval_create_from_date_string($whenToNotify));
         $today = new \DateTime('now');
-        var_dump('kiedy wysłać: '.$sendDate->format('Y-m-d'));
-        var_dump('dziś: '.$today->format('Y-m-d'));die();
+
         if ($sendDate < $today) {
+            $this->logger->info(
+                'Data wysyłki jest w przeszłości. Nie wysyłam.',
+                [
+                    'sendDate' => $sendDate,
+                    'today' => $today
+                ]
+            );
             return;
         }
 
