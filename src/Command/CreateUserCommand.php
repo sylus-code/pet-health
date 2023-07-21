@@ -38,6 +38,7 @@ class CreateUserCommand extends Command
         $this
             ->addArgument('username', InputArgument::REQUIRED, 'Utwórz konto właściciela')
             ->addArgument('password', InputArgument::REQUIRED, 'Utworz haslo dostepu')
+            ->addArgument('email',InputArgument::REQUIRED, 'Podaj adres email')
         ;
     }
 
@@ -51,9 +52,11 @@ class CreateUserCommand extends Command
         $user = new User();
         $username = $input->getArgument('username');
         $plainPassword = $input->getArgument('password');
+        $email = $input->getArgument('email');
 
 
         $user->setUsername($username);
+        $user->setEmail($email);
         $encoded = $this->passwordEncoder->encodePassword($user, $plainPassword);
         $user->setPassword($encoded);
 
@@ -61,7 +64,7 @@ class CreateUserCommand extends Command
         $this->entityManager->flush();
 
         $output->writeln([
-            'Utworzono nowe konto! '.$username
+            sprintf('<info>Utworzono nowe konto! %s</info>',$username)
         ]);
 
         return Command::SUCCESS;

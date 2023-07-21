@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Animal;
 use App\Form\AnimalType;
 use App\Repository\AnimalRepository;
@@ -15,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AnimalController extends AbstractController
 {
-    private $animalRepository;
+    private AnimalRepository $animalRepository;
 
     public function __construct(AnimalRepository $animalRepository)
     {
@@ -29,6 +28,7 @@ class AnimalController extends AbstractController
     public function index(): Response
     {
         $animals = $this->animalRepository->findBy(['user' => $this->getUser()]);
+
         $this->denyAccessUnlessGranted(AnimalVoter::ACCESS, $animals);
 
         return $this->render(

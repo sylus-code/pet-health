@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class VaccineController extends AbstractController
 {
-    private $preventionRepository;
+    private PreventionRepository $preventionRepository;
 
     public function __construct(PreventionRepository $preventionRepository)
     {
@@ -61,9 +61,7 @@ class VaccineController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $vaccine->setAnimal($animal);
             $vaccine->setType(0);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($vaccine);
-            $entityManager->flush();
+            $this->preventionRepository->save($vaccine);
 
             $this->addFlash(
                 'success',
@@ -98,9 +96,8 @@ class VaccineController extends AbstractController
             $this->addFlash('warning', 'Szczepienie o podanym id: ' . $vaccine->getId() . ' nie istnieje!');
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($vaccine);
-            $em->flush();
+            $this->preventionRepository->save($vaccine);
+
 
             $this->addFlash('success', 'Szczepienie zaktualizowane!');
             return $this->redirectToRoute(
@@ -127,10 +124,7 @@ class VaccineController extends AbstractController
     public function delete(Prevention $vaccine): Response
     {
         $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $vaccine);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($vaccine);
-        $em->flush();
+        $this->preventionRepository->delete($vaccine);
 
         $this->addFlash(
             'success',

@@ -5,20 +5,24 @@ namespace App\Controller;
 use App\Entity\Animal;
 use App\Entity\Prevention;
 use App\Form\CareType;
+use App\Message\PreventionCreated;
 use App\Repository\PreventionRepository;
 use App\Security\PreventionVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CareController extends AbstractController
 {
-    private $preventionRepository;
+    private PreventionRepository $preventionRepository;
+    private MessageBusInterface $bus;
 
-    public function __construct(PreventionRepository $preventionRepository)
+    public function __construct(PreventionRepository $preventionRepository, MessageBusInterface $bus)
     {
         $this->preventionRepository = $preventionRepository;
+        $this->bus = $bus;
     }
 
     /**
@@ -64,9 +68,7 @@ class CareController extends AbstractController
             $this->addFlash('warning', 'Pielęgnacja o podanym id: ' . $care->getId() . ' nie istnieje!');
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($care);
-            $entityManager->flush();
+            $this->preventionRepository->save($care);
 
             $this->addFlash(
                 'success',
@@ -104,10 +106,10 @@ class CareController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $care->setAnimal($animal);
             $care->setType(Prevention::CARE);
+            $this->preventionRepository->save($care);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($care);
-            $entityManager->flush();
+            $message = new PreventionCreated($care->getId());
+            $this->bus->dispatch($message);
 
             $this->addFlash(
                 'success',
@@ -139,10 +141,7 @@ class CareController extends AbstractController
     public function delete(Prevention $care): Response
     {
         $this->denyAccessUnlessGranted(PreventionVoter::ACCESS, $care);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($care);
-        $entityManager->flush();
+        $this->preventionRepository->delete($care);
 
         $this->addFlash(
             'success',
