@@ -15,9 +15,6 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 .idea
+.DS_Store
 public/.htaccess
 
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###

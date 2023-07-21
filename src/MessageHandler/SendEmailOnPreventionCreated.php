@@ -17,10 +17,10 @@ class SendEmailOnPreventionCreated implements MessageHandlerInterface
     private LoggerInterface $logger;
     private MailerInterface $mailer;
 
-    // wstrzykuje serwis który umie wysyłac email = Mailer
-    public function __construct(LoggerInterface $logger,
-                                MailerInterface $mailer,
-                                PreventionRepository $preventionRepository
+    public function __construct(
+        LoggerInterface $logger,
+        MailerInterface $mailer,
+        PreventionRepository $preventionRepository
     ) {
         $this->logger = $logger;
         $this->mailer = $mailer;
@@ -31,7 +31,7 @@ class SendEmailOnPreventionCreated implements MessageHandlerInterface
     {
         $prevention = $this->preventionRepository->findOneBy(['id' => $preventionCreated->getPreventionId()]);
 
-        if ($prevention == null){
+        if ($prevention == null) {
             echo 'null prevention value';
             return;
         }
@@ -41,12 +41,13 @@ class SendEmailOnPreventionCreated implements MessageHandlerInterface
             ->from(self::SENDER)
             ->subject('Dodano nowy zabieg profilaktyczny')
             ->text(
-                sprintf('Dodano nowy zabieg profilaktyczny typu: %s, %s. W dniu: %s. ',
+                sprintf(
+                    'Dodano nowy zabieg profilaktyczny typu: %s, %s. W dniu: %s. ',
                     $this->createPreventionTypeName($prevention),
                     $prevention->getDescription(),
-                    $prevention->getDate()->format('Y-m-d'))
+                    $prevention->getDate()->format('Y-m-d')
+                )
             );
-        // wysyłam emaila
         $this->mailer->send($email);
         $this->logger->info('Wysyłam maila dla nowo dodanego Prevention', ['event' => $prevention->getDescription()]);
     }

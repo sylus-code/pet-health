@@ -16,10 +16,11 @@ class ScheduleEmailSend implements MessageHandlerInterface
     private NotificationRepository $notificationRepository;
     private LoggerInterface $logger;
 
-    public function __construct(PreventionRepository $preventionRepository,
-                                NotificationRepository $notificationRepository,
-                                LoggerInterface $logger)
-    {
+    public function __construct(
+        PreventionRepository $preventionRepository,
+        NotificationRepository $notificationRepository,
+        LoggerInterface $logger
+    ) {
         $this->preventionRepository = $preventionRepository;
         $this->notificationRepository = $notificationRepository;
         $this->logger = $logger;
@@ -32,16 +33,20 @@ class ScheduleEmailSend implements MessageHandlerInterface
         $this->addNotification("1 day", $prevention);
     }
 
-    // powiadomienie przed wydarzeniem z wyprzedzeniem = $whenToNotify np: "2 weeks", "1 day"
-    private function addNotification(string $whenToNotify,
-                                     Prevention $prevention): void
+    private function addNotification(string $whenToNotify, Prevention $prevention): void
     {
-        $this->logger->info(sprintf(
-            "Planuje wysyłke emaila na dzien: %s",
-            $prevention->getDate()->format('Y-m-d H:i')
-        ));
+        $this->logger->info(
+            sprintf(
+                "Planuje wysyłkę emaila na dzień: %s",
+                $prevention->getDate()->format(
+                    'Y-m-d H:i'
+                )
+            )
+        );
         $temp = clone $prevention->getDate();
-        $sendDate = date_sub($temp, date_interval_create_from_date_string($whenToNotify));
+
+        $interval = \DateInterval::createFromDateString($whenToNotify);
+        $sendDate = $temp->sub($interval);
 
         $today = new \DateTime('now');
 
@@ -58,8 +63,12 @@ class ScheduleEmailSend implements MessageHandlerInterface
 
         $notification = new Notification();
         $notification->setEmail($prevention->getAnimal()->getUser()->getEmail());
-        $notification->setTitle(sprintf('Powiadomienie o zabiegu profilaktycznym typu: %s',
-            $this->createPreventionTypeName($prevention)));
+        $notification->setTitle(
+            sprintf(
+                'Powiadomienie o zabiegu profilaktycznym typu: %s',
+                $this->createPreventionTypeName($prevention)
+            )
+        );
         $notification->setContent($this->createContent($prevention));
         $notification->setSendDate($sendDate);
 
@@ -84,7 +93,8 @@ class ScheduleEmailSend implements MessageHandlerInterface
 
     private function createContent(Prevention $prevention): string
     {
-        return sprintf('Zbliża się zabieg profilaktyczny typu: %s, %s. W dniu: %s. ',
+        return sprintf(
+            'Zbliża się zabieg profilaktyczny typu: %s, %s. W dniu: %s. ',
             $this->createPreventionTypeName($prevention),
             $prevention->getDescription(),
             $prevention->getDate()->format('Y-m-d')

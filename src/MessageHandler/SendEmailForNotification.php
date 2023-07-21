@@ -17,9 +17,11 @@ class SendEmailForNotification implements MessageHandlerInterface
 
     private const SENDER = 'pethealth.notification@gmail.com';
 
-    // wstrzykuje serwis który umie wysyłac email = Mailer
-    public function __construct(LoggerInterface $logger, MailerInterface $mailer, NotificationRepository $notificationRepository)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        MailerInterface $mailer,
+        NotificationRepository $notificationRepository
+    ) {
         $this->logger = $logger;
         $this->mailer = $mailer;
         $this->notificationRepository = $notificationRepository;
@@ -34,9 +36,11 @@ class SendEmailForNotification implements MessageHandlerInterface
             ->subject($notification->getTitle())
             ->text($notification->getContent());
 
-        // wysyłam emaila
         $this->mailer->send($email);
-        $this->logger->info('Wysyłam emaila dla notyfikacji o zbliżającym się terminie Prevention', ['event' => $notification->getTitle()]);
+        $this->logger->info(
+            'Wysyłam emaila dla notyfikacji o zbliżającym się terminie Prevention',
+            ['event' => $notification->getTitle()]
+        );
 
         $notification->setStatus(true);
         $this->notificationRepository->save($notification);

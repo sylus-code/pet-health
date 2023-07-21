@@ -108,7 +108,6 @@ class CareController extends AbstractController
             $care->setType(Prevention::CARE);
             $this->preventionRepository->save($care);
 
-            // sprawdz czy to id juz tu jest po savie
             $message = new PreventionCreated($care->getId());
             $this->bus->dispatch($message);
 
